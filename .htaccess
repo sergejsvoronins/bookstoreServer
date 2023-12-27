@@ -1,0 +1,7 @@
+RewriteEngine On
+RewriteBase /bookstore/
+RewriteRule ^index\\.php$ - [L]
+# RewriteRule ^sellers/([0-9]+) index.php?seller-id=$1
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /bookstore/index.php [L]
