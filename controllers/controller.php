@@ -58,14 +58,16 @@ class Controller {
             //     $this->view->outputJsonValidationsError($errors);
             // }
             // else {
-            //     $response = $model->$method((int)$id);
-            //     if (count($response)!=0) {
-            //         $this->view->outputJsonSingle($model->$method((int)$id)[0]);
-            //     }
-            //     else {
-            //         http_response_code(404);
-            //         echo "Not Found";
-            //     }
+                // $response = $model->$method((int)$id);
+                // if (count($response)!=0) {
+                    // var_dump($response[0]);
+                    $this->view->outputJsonSingle($model->$method((int)$id)[0]);
+                    // $this->view->outputJsonCollection($model->$method((int)$id));
+                // }
+                // else {
+                //     http_response_code(404);
+                //     echo "Not Found";
+                // }
                 
             // }
         } else {
