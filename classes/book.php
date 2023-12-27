@@ -11,6 +11,7 @@ class Book {
     public $price = 0;
     public $isbn = 0;
     public $created = 0;
+    public $modified = null;
     function __construct($title, $description,$pages,$year,$language,$authorId,$genreId, $price, $isbn,$created) {
         $this->title = $title;
         $this->description = $description;

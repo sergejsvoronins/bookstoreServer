@@ -4,6 +4,7 @@ class Author {
     public string $firstName = "";
     public string $lastName = "";
     public int $created = 0;
+    public $modified = null;
     function __construct(
         $firstName, $lastName, $created
     ) {

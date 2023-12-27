@@ -1,5 +1,7 @@
 <?php
-// require "classes/models/seller-model.php";
+require "classes/models/author-model.php";
+$authors = new AuthorModel();
+var_dump($authors->getAllAuthors());
 // require "classes/models/product-model.php";
 // require "classes/views/secondhand-api.php";
 // require "controllers/controller.php";
