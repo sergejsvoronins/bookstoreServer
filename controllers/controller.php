@@ -1,6 +1,7 @@
 <?php
 require "classes/book.php";
 require "classes/category.php";
+require "classes/author.php";
 class Controller {
     private $routes = [];
     private $view = null;
@@ -106,6 +107,16 @@ class Controller {
                     );
                 $id = $model->$method($category);
                 break;
+                case ("authors") :
+                    $requestData["firstName"] = filter_var($requestData["firstName"] ?? null,FILTER_SANITIZE_SPECIAL_CHARS);
+                    $requestData["lastName"] = filter_var($requestData["lastName"] ?? null,FILTER_SANITIZE_SPECIAL_CHARS);
+                    $author = new Author (
+                        $requestData["firstName"],
+                        $requestData["lastName"],
+
+                    );
+                $id = $model->$method($author);
+                break;
         }
          if($id){
             http_response_code(201);
@@ -119,8 +130,10 @@ class Controller {
         if($id) {
             $data = file_get_contents("php://input");
             $requestData = json_decode($data, true);
+            $item = "";
             switch($element) {
                 case ("books") : 
+                    $item = "Book";
                     $requestData["title"] = filter_var($requestData["title"] ?? null,FILTER_SANITIZE_SPECIAL_CHARS);
                     $requestData["description"] = filter_var($requestData["description"] ?? null,FILTER_SANITIZE_SPECIAL_CHARS);
                     $requestData["pages"] = filter_var($requestData["pages"] ?? null,FILTER_SANITIZE_NUMBER_INT);
@@ -145,17 +158,30 @@ class Controller {
                     $response = $model->$method($book, $id);
                     break;
                 case ("categories") :
+                    $item = "Category";
                     $requestData["name"] = filter_var($requestData["name"] ?? null,FILTER_SANITIZE_SPECIAL_CHARS);
                     $requestData["created"] = filter_var($requestData["created"] ?? null,FILTER_SANITIZE_NUMBER_INT);
                     $category = new Category (
                     $requestData["name"]
                     );
-                $response = $model->$method($category, $id);
+                    $response = $model->$method($category, $id);
+                    break;
+                case ("authors") :
+                    $item = "Author";
+                    $requestData["firstName"] = filter_var($requestData["firstName"] ?? null,FILTER_SANITIZE_SPECIAL_CHARS);
+                    $requestData["lastName"] = filter_var($requestData["lastName"] ?? null,FILTER_SANITIZE_SPECIAL_CHARS);
+                    $requestData["created"] = filter_var($requestData["created"] ?? null,FILTER_SANITIZE_NUMBER_INT);
+                    $author = new Author (
+                    $requestData["firstName"],
+                    $requestData["lastName"],
+                    );
+                    $response = $model->$method($author, $id);
+                    break;
             }
             if($response!=0){
                 http_response_code(200);
                 echo json_encode([
-                    "message" => "Category with ID = $id has been updated"
+                    "message" => "$item with ID = $id has been updated"
                 ]);
             }
         }

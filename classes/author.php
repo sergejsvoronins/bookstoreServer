@@ -6,11 +6,11 @@ class Author {
     public int $created = 0;
     public $modified = null;
     function __construct(
-        $firstName, $lastName, $created
+        $firstName, $lastName
     ) {
         $this->firstName = $firstName;
         $this->lastName = $lastName;
-        $this->created = $created;
+        $this->created = time();
     }
     
 
