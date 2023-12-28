@@ -1,5 +1,6 @@
 <?php
 require "classes/book.php";
+require "classes/category.php";
 class Controller {
     private $routes = [];
     private $view = null;
@@ -82,7 +83,7 @@ class Controller {
                 $requestData["year"] = filter_var($requestData["year"] ?? null,FILTER_SANITIZE_NUMBER_INT);
                 $requestData["language"] = filter_var($requestData["language"] ?? null,FILTER_SANITIZE_SPECIAL_CHARS);
                 $requestData["authorId"] = filter_var($requestData["authorId"] ?? null,FILTER_SANITIZE_NUMBER_INT);
-                $requestData["genreId"] = filter_var($requestData["genreId"] ?? null,FILTER_SANITIZE_NUMBER_INT);
+                $requestData["categoryId"] = filter_var($requestData["categoryId"] ?? null,FILTER_SANITIZE_NUMBER_INT);
                 $requestData["price"] = filter_var($requestData["price"] ?? null,FILTER_SANITIZE_NUMBER_INT);
                 $requestData["isbn"] = filter_var($requestData["isbn"] ?? null,FILTER_SANITIZE_NUMBER_INT);
                 $book = new Book (
@@ -92,13 +93,18 @@ class Controller {
                     (int) $requestData["year"],
                     $requestData["language"],
                     (int) $requestData["authorId"],
-                    (int) $requestData["genreId"],
+                    (int) $requestData["categoryId"],
                     (int) $requestData["price"],
                     (int) $requestData["isbn"],
                 );
-                
-                // var_dump($book);
                 $id = $model->$method($book);
+                break;
+                case ("categories") :
+                    $requestData["name"] = filter_var($requestData["name"] ?? null,FILTER_SANITIZE_SPECIAL_CHARS);
+                    $category = new Category (
+                        $requestData["name"]
+                    );
+                $id = $model->$method($category);
                 break;
         }
          if($id){
@@ -121,7 +127,7 @@ class Controller {
                     $requestData["year"] = filter_var($requestData["year"] ?? null,FILTER_SANITIZE_NUMBER_INT);
                     $requestData["language"] = filter_var($requestData["language"] ?? null,FILTER_SANITIZE_SPECIAL_CHARS);
                     $requestData["authorId"] = filter_var($requestData["authorId"] ?? null,FILTER_SANITIZE_NUMBER_INT);
-                    $requestData["genreId"] = filter_var($requestData["genreId"] ?? null,FILTER_SANITIZE_NUMBER_INT);
+                    $requestData["categoryId"] = filter_var($requestData["categoryId"] ?? null,FILTER_SANITIZE_NUMBER_INT);
                     $requestData["price"] = filter_var($requestData["price"] ?? null,FILTER_SANITIZE_NUMBER_INT);
                     $requestData["isbn"] = filter_var($requestData["isbn"] ?? null,FILTER_SANITIZE_NUMBER_INT);
                     $requestData["created"] = filter_var($requestData["created"] ?? null,FILTER_SANITIZE_NUMBER_INT);
@@ -132,23 +138,29 @@ class Controller {
                         (int) $requestData["year"],
                         $requestData["language"],
                         (int) $requestData["authorId"],
-                        (int) $requestData["genreId"],
+                        (int) $requestData["categoryId"],
                         (int) $requestData["price"],
                         (int) $requestData["isbn"]
                     );
                     $response = $model->$method($book, $id);
                     break;
+                case ("categories") :
+                    $requestData["name"] = filter_var($requestData["name"] ?? null,FILTER_SANITIZE_SPECIAL_CHARS);
+                    $requestData["created"] = filter_var($requestData["created"] ?? null,FILTER_SANITIZE_NUMBER_INT);
+                    $category = new Category (
+                    $requestData["name"]
+                    );
+                $response = $model->$method($category, $id);
             }
             if($response!=0){
                 http_response_code(200);
                 echo json_encode([
-                    "message" => "Book with ID = $id has been updated"
+                    "message" => "Category with ID = $id has been updated"
                 ]);
             }
         }
     }
     private function handleDeleteRoute ($model, $method, int $id) : void {
-        var_dump("här");
         if($id) {
             $model->$method($id);
         }
