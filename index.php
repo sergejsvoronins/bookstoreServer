@@ -24,6 +24,8 @@ $controler->addRoute("books", $bookModel, "getAllBooks", "GET");
 $controler->addRoute("books/", $bookModel, "getSingleBook", "GET");
 $controler->addRoute("users", $userModel, "getAllUsers", "GET");
 $controler->addRoute("books", $bookModel, "addBook", "POST");
+$controler->addRoute("books/", $bookModel, "updateBook", "PUT");
+$controler->addRoute("books/", $bookModel, "deleteBook", "DELETE");
 // // $controler->addRoute("sellers", $sellerModel, "addSeller", "POST");
 // // $controler->addRoute("products/", $productModel, "getOneProduct", "GET");
 // // $controler->addRoute("products/", $productModel, "addSellingDate", "PUT");

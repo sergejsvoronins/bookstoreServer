@@ -17,7 +17,7 @@ class BookModel extends DB
         $stmt->execute([$id]);
         return $stmt->fetchAll();
     }
-    public function addBook(Book $book)
+    public function addBook(Book $book) : string
     {
         $query = "INSERT INTO `books`(
             `title`, 
@@ -31,9 +31,29 @@ class BookModel extends DB
             `isbn`,
             `created`) VALUES (?,?,?,?,?,?,?,?,?,?)";
         $stmt = $this->pdo->prepare($query);
-        var_dump("här");
         $stmt->execute([$book->title, $book->description, $book->pages, $book->year, $book->language, $book->authorId, $book->genreId, $book->price, $book->isbn, $book->created]);
         return $this->pdo->lastInsertId();
     }
 
+    public function updateBook(Book $book, int $id) : int {
+        $query = "UPDATE `books` SET 
+            `title`= ?,
+            `description`=?,
+            `pages`=?,
+            `year`=?,
+            `language`=?,
+            `authorId`=?,
+            `genreId`=?,
+            `price`=?,
+            `isbn`=?,
+            `modified`=? WHERE books.id = ?";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute([$book->title, $book->description, $book->pages, $book->year, $book->language, $book->authorId, $book->genreId, $book->price, $book->isbn, time(), $id]);
+        return $stmt->rowCount();
+    }
+    public function deleteBook (int $id) : void {
+        $query = "DELETE FROM `books` WHERE books.id = ?";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute([$id]);
+    }
 }
