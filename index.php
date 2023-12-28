@@ -23,6 +23,7 @@ $controler->addRoute("genres", $genreModel, "getAllGenres", "GET");
 $controler->addRoute("books", $bookModel, "getAllBooks", "GET");
 $controler->addRoute("books/", $bookModel, "getSingleBook", "GET");
 $controler->addRoute("users", $userModel, "getAllUsers", "GET");
+$controler->addRoute("books", $bookModel, "addBook", "POST");
 // // $controler->addRoute("sellers", $sellerModel, "addSeller", "POST");
 // // $controler->addRoute("products/", $productModel, "getOneProduct", "GET");
 // // $controler->addRoute("products/", $productModel, "addSellingDate", "PUT");

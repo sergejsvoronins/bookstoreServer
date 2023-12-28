@@ -12,7 +12,7 @@ class Book {
     public $isbn = 0;
     public $created = 0;
     public $modified = null;
-    function __construct($title, $description,$pages,$year,$language,$authorId,$genreId, $price, $isbn,$created) {
+    function __construct($title, $description,$pages,$year,$language,$authorId,$genreId, $price, $isbn) {
         $this->title = $title;
         $this->description = $description;
         $this->pages = $pages;
@@ -22,7 +22,7 @@ class Book {
         $this->genreId = $genreId;
         $this->price = $price;
         $this->isbn = $isbn;
-        $this->created = $created;
+        $this->created = time();
     }
     
 }
