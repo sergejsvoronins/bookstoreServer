@@ -9,7 +9,7 @@ class BookModel extends DB
     }
     public function getSingleBook(int $id)
     {
-        $query = "SELECT b.id, title, description, pages, year, language, price, isbn, CONCAT(a.firstName, ' ', a.lastName) AS author, c.name AS category FROM `books` AS b
+        $query = "SELECT b.id, title, description, imgUrl, pages, year, language, price, isbn, CONCAT(a.firstName, ' ', a.lastName) AS author, c.name AS category FROM `books` AS b
             JOIN authors AS a ON a.id = b.authorId
             JOIN categories AS c ON c.id = b.categoryId
             WHERE b.id = ?";
@@ -22,6 +22,7 @@ class BookModel extends DB
         $query = "INSERT INTO `books`(
             `title`, 
             `description`, 
+            `imgUrl`,
             `pages`, 
             `year`, 
             `language`, 
@@ -29,10 +30,9 @@ class BookModel extends DB
             `categoryId`, 
             `price`, 
             `isbn`,
-            `created`) VALUES (?,?,?,?,?,?,?,?,?,?)";
+            `created`) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
         $stmt = $this->pdo->prepare($query);
-        $stmt->execute([$book->title, $book->description, $book->pages, $book->year, $book->language, $book->authorId, $book->categoryId, $book->price, $book->isbn, $book->created]);
-        var_dump("här");
+        $stmt->execute([$book->title, $book->description,$book->imgUrl, $book->pages, $book->year, $book->language, $book->authorId, $book->categoryId, $book->price, $book->isbn, $book->created]);
         return $this->pdo->lastInsertId();
     }
 
@@ -40,6 +40,7 @@ class BookModel extends DB
         $query = "UPDATE `books` SET 
             `title`= ?,
             `description`=?,
+            `imgUrl`=?,
             `pages`=?,
             `year`=?,
             `language`=?,
@@ -49,7 +50,7 @@ class BookModel extends DB
             `isbn`=?,
             `modified`=? WHERE books.id = ?";
         $stmt = $this->pdo->prepare($query);
-        $stmt->execute([$book->title, $book->description, $book->pages, $book->year, $book->language, $book->authorId, $book->categoryId, $book->price, $book->isbn, time(), $id]);
+        $stmt->execute([$book->title, $book->description,$book->imgUrl, $book->pages, $book->year, $book->language, $book->authorId, $book->categoryId, $book->price, $book->isbn, time(), $id]);
         return $stmt->rowCount();
     }
     public function deleteBook (int $id) : void {

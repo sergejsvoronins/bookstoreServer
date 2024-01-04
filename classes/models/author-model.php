@@ -7,20 +7,18 @@ class AuthorModel extends DB {
     }
     public function addAuthor (Author $author) : string {
         $query = "INSERT INTO `authors`(
-        `firstName`, 
-        `lastName`,
-        `created`) VALUES (?,?,?)";
+        `name`, 
+        `created`) VALUES (?,?)";
         $stmt = $this->pdo->prepare($query);
-        $stmt->execute([$author->firstName, $author->lastName,$author->created]);
+        $stmt->execute([$author->name, $author->created]);
         return $this->pdo->lastInsertId();
     }
     public function updateAuthor (Author $author, int $id) : int {
         $query = "UPDATE `authors` SET 
-            `firstName`= ?,
-            `lastName`=?,
+            `name`= ?,
             `modified`=? WHERE authors.id = ?";
         $stmt = $this->pdo->prepare($query);
-        $stmt->execute([$author->firstName, $author->lastName,time(), $id]);
+        $stmt->execute([$author->name, time(), $id]);
         return $stmt->rowCount();
     }
     public function deleteAuthor (int $id) : void {
