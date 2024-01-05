@@ -62,7 +62,13 @@ class Controller {
         if ($id || $id === "") {
             $response = $model->$method((int)$id);
             if (count($response)!=0) {
-                $this->view->outputJsonSingle($model->$method((int)$id)[0]);
+                switch ($model->getTable()) {
+                    case "categories" || "authors" : 
+                        $this->view->outputJsonSingle($model->$method((int)$id));
+                        break;
+                    default :
+                    $this->view->outputJsonSingle($model->$method((int)$id)[0]);
+                }
             }
             else {
                 http_response_code(404);

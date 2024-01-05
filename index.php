@@ -31,6 +31,7 @@ $controler->addRoute("books", $bookModel, "addBook", "POST");
 $controler->addRoute("books/", $bookModel, "updateBook", "PUT");
 $controler->addRoute("books/", $bookModel, "deleteBook", "DELETE");
 $controler->addRoute("categories", $categoryModel, "getAllcategories", "GET");
+$controler->addRoute("categories/", $categoryModel, "getCategoryBooks", "GET");
 $controler->addRoute("categories", $categoryModel, "addCategory", "POST");
 $controler->addRoute("categories/", $categoryModel, "updateCategory", "PUT");
 $controler->addRoute("categories/", $categoryModel, "deleteCategory", "DELETE");
