@@ -6,6 +6,7 @@ header('Access-Control-Allow-Headers: Content-Type, Accept, Authorization');
 require "classes/models/author-model.php";
 require "classes/models/book-model.php";
 require "classes/models/category-model.php";
+require "classes/models/search-model.php";
 require "classes/models/user-model.php";
 require "classes/views/bookstore-view.php";
 require "controllers/controller.php";
@@ -21,6 +22,7 @@ $authorModel = new AuthorModel();
 $bookModel = new BookModel();
 $categoryModel = new CategoryModel();
 $userModel = new UserModel();
+$searchModel = new SearchModel();
 $controler = new Controller($bookstoreView, $method);
 
 // Creating routes
@@ -40,6 +42,7 @@ $controler->addRoute("authors", $authorModel, "addAuthor", "POST");
 $controler->addRoute("authors/", $authorModel, "updateAuthor", "PUT");
 $controler->addRoute("authors/", $authorModel, "deleteAuthor", "DELETE");
 $controler->addRoute("users", $userModel, "getAllUsers", "GET");
+$controler->addRoute("search", $searchModel, "getSearchBooks", "GET");
 
 //Starting API
 $controler->start($request);

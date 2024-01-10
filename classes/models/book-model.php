@@ -5,16 +5,23 @@ class BookModel extends DB
     protected $table = "books";
     public function getAllBooks(): array
     {
-        return $this->getAll($this->table);
+        $query = "SELECT b.id, title, description, imgUrl, pages, year, language, price, isbn, a.name AS author, c.name AS category FROM `books` AS b
+            JOIN authors AS a ON a.id = b.authorId
+            JOIN categories AS c ON c.id = b.categoryId";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll();
+        // return $this->getAll($this->table);
     }
     public function getSingleBook(int $id)
     {
-        $query = "SELECT b.id, title, description, imgUrl, pages, year, language, price, isbn, CONCAT(a.firstName, ' ', a.lastName) AS author, c.name AS category FROM `books` AS b
+        $query = "SELECT b.id, title, description, imgUrl, pages, year, language, price, isbn, a.name AS author, c.name AS category FROM `books` AS b
             JOIN authors AS a ON a.id = b.authorId
             JOIN categories AS c ON c.id = b.categoryId
             WHERE b.id = ?";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute([$id]);
+        
         return $stmt->fetchAll();
     }
     public function addBook(Book $book) : string
@@ -58,4 +65,8 @@ class BookModel extends DB
         $stmt = $this->pdo->prepare($query);
         $stmt->execute([$id]);
     }
+        public function getTable () {
+        return $this->table;
+    }
 }
+

@@ -21,25 +21,30 @@ class Controller {
     {
 
         $parts = explode("/", $request);
+        $url = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY);
+        $queryParams = parse_str($url, $params);
         $matchedRoute = null;
-        if(count($parts) == 3 && isset($this->routes[$this->method][$parts[2]])){
-            $matchedRoute = $this->routes[$this->method][$parts[2]];
+        if(count($parts) == 3){
+            if(isset($params['q']) && strncmp($parts[2], "search", 6) === 0) {
+                $matchedRoute = $this->routes[$this->method]["search"];
+
+            }
+            else if(($this->routes[$this->method][$parts[2]])){
+                $matchedRoute = $this->routes[$this->method][$parts[2]];
+            }
         }
         else if(count($parts) == 4 && isset($this->routes[$this->method][$parts[2] . "/"])){
             $matchedRoute = $this->routes[$this->method][$parts[2] . "/"];
         }
-        else {
-                http_response_code(404);
-                echo "Page is not found";
-            }
+
         if ($matchedRoute) {
             $id = $parts[3] ?? null;
+            $query = $params['q'] ?? null;
             $model = $matchedRoute['model'];
             $method = $matchedRoute['method'];
-
             switch ($this->method) {
                 case 'GET':
-                    $this->handleGetRoute($model, $method, $id);
+                    $this->handleGetRoute($model, $method, $id, $query);
                     break;
                 case 'POST':
                     $this->handlePostRoute($model, $method, $parts[2]);
@@ -55,26 +60,46 @@ class Controller {
                     break;
             }
         } 
+        else {
+            http_response_code(404);
+            echo "Page is not found";
+        }
         
     }
-    private function handleGetRoute($model, $method, $id) : void {
+    private function handleGetRoute($model, $method, $id, $query) : void {
 
         if ($id || $id === "") {
             $response = $model->$method((int)$id);
+            
             if (count($response)!=0) {
                 switch ($model->getTable()) {
-                    case "categories" || "authors" : 
-                        $this->view->outputJsonSingle($model->$method((int)$id));
-                        break;
-                    default :
-                    $this->view->outputJsonSingle($model->$method((int)$id)[0]);
-                }
+                        case "categories" : 
+                                $this->view->outputJsonSingle($model->$method((int)$id));
+                                break;
+                        case "authors" : 
+                                $this->view->outputJsonSingle($model->$method((int)$id));
+                                break;
+                        case "books" :
+                            $this->view->outputJsonSingle($model->$method((int)$id)[0]);
+                            break;
+                        // case "search" :
+                        //     $this->view->outputJsonCollection($model->$method())
+                        default :
+                            $this->view->outputJsonSingle($model->$method((int)$id)[0]);
+                            break;
+                        }
             }
             else {
                 http_response_code(404);
                 echo "Not Found";
             }
-        } else {
+        } 
+        else if ($query) {
+            $newString = str_replace("+", " ", $query);
+            $this->view->outputJsonCollection($model->$method($newString));
+
+        }
+        else {
             $this->view->outputJsonCollection($model->$method());
 
         } 
@@ -164,7 +189,6 @@ class Controller {
                 $id = $model->$method($category);
                 break;
                 case ("authors") :
-                    var_dump("här");
                     $requestData["name"] = filter_var($requestData["name"],FILTER_SANITIZE_SPECIAL_CHARS);
                     $author = new Author (
                         $requestData["name"],

@@ -1,15 +1,15 @@
 <?php
 class User {
     public $id = 0;
-    private $firstName = "";
-    private $lastName = "";
+    private $firstName = null;
+    private $lastName = null;
     private $account = "";
     private $password = null;
-    private $address = "";
+    private $address = null;
     private $zipCode = 0;
-    private $city = "";
-    private $mobile = "";
-    private $email = "";
+    private $city = null;
+    private $mobile = null;
+    private $email = null;
     public $created = 0;
     public $modified = null;
     function __construct(
@@ -36,6 +36,19 @@ class User {
         $this->email = $email;
         $this->created = $created;
 
+    }
+
+    function getFirstName () {
+        return $this->firstName;
+    }
+    function getLastName () {
+        return $this->lastName;
+    }
+    function getEmail () {
+        return $this->email;
+    }
+    function geMobile () {
+        return $this->mobile;
     }
 
 }

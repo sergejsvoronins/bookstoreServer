@@ -26,4 +26,7 @@ class AuthorModel extends DB {
         $stmt = $this->pdo->prepare($query);
         $stmt->execute([$id]);
     }
+    public function getTable () {
+        return $this->table;
+    }
 }
