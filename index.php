@@ -3,11 +3,13 @@ header("Content-Type: application/json");
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Accept, Authorization');
+header('Access-Control-Allow-Headers: Content-Type, Accept, Authorization');
 require "classes/models/author-model.php";
 require "classes/models/book-model.php";
 require "classes/models/category-model.php";
 require "classes/models/search-model.php";
 require "classes/models/user-model.php";
+require "classes/models/order-model.php";
 require "classes/views/bookstore-view.php";
 require "controllers/controller.php";
 if($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
@@ -23,6 +25,7 @@ $bookModel = new BookModel();
 $categoryModel = new CategoryModel();
 $userModel = new UserModel();
 $searchModel = new SearchModel();
+$orderModel = new OrderModel();
 $controler = new Controller($bookstoreView, $method);
 
 // Creating routes
@@ -43,6 +46,8 @@ $controler->addRoute("authors/", $authorModel, "updateAuthor", "PUT");
 $controler->addRoute("authors/", $authorModel, "deleteAuthor", "DELETE");
 $controler->addRoute("users", $userModel, "getAllUsers", "GET");
 $controler->addRoute("search", $searchModel, "getSearchBooks", "GET");
+$controler->addRoute("orders", $orderModel, "addOrder", "POST");
+
 
 //Starting API
 $controler->start($request);

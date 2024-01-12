@@ -2,6 +2,7 @@
 require "classes/book.php";
 require "classes/category.php";
 require "classes/author.php";
+require "classes/order.php";
 class Controller {
     private $routes = [];
     private $view = null;
@@ -181,21 +182,29 @@ class Controller {
                 );
                 $id = $model->$method($book);
                 break;
-                case ("categories") :
-                    $requestData["name"] = filter_var($requestData["name"],FILTER_SANITIZE_SPECIAL_CHARS);
-                    $category = new Category (
-                        $requestData["name"]
-                    );
-                $id = $model->$method($category);
-                break;
-                case ("authors") :
-                    $requestData["name"] = filter_var($requestData["name"],FILTER_SANITIZE_SPECIAL_CHARS);
-                    $author = new Author (
-                        $requestData["name"],
+            case ("categories") :
+                $requestData["name"] = filter_var($requestData["name"],FILTER_SANITIZE_SPECIAL_CHARS);
+                $category = new Category (
+                    $requestData["name"]
+                );
+            $id = $model->$method($category);
+            break;
+            case ("authors") :
+                $requestData["name"] = filter_var($requestData["name"],FILTER_SANITIZE_SPECIAL_CHARS);
+                $author = new Author (
+                    $requestData["name"],
 
-                    );
-                $id = $model->$method($author);
-                break;
+                );
+            $id = $model->$method($author);
+            break;
+            case ("orders") :
+                $order = new Order (
+                   (int) $requestData["customerId"],
+                   (int) $requestData["totalPrice"],
+                   (array) $requestData["books"],
+                );
+            $id = $model->$method($order);
+            break;
         }
          if($id){
             http_response_code(201);
