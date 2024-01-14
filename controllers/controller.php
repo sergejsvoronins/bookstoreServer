@@ -3,6 +3,7 @@ require "classes/book.php";
 require "classes/category.php";
 require "classes/author.php";
 require "classes/order.php";
+require "classes/shipment.php";
 class Controller {
     private $routes = [];
     private $view = null;
@@ -201,9 +202,80 @@ class Controller {
                 $order = new Order (
                    (int) $requestData["customerId"],
                    (int) $requestData["totalPrice"],
+                   (int) $requestData["shipmentId"],
                    (array) $requestData["books"],
                 );
             $id = $model->$method($order);
+            break;
+            case ("shipments") :
+                // Validate text fields
+                var_dump("här");
+                if (empty($requestData['firstName'] || preg_match('/^\s*$/', $requestData['firstName']))) {
+                http_response_code(400);
+                echo json_encode([
+                    'message' => 'The firstname cannot be empty.'
+                ]);
+                return;
+                }
+                if (empty($requestData['lastName']) || preg_match('/^\s*$/', $requestData['lastName'])) {
+                http_response_code(400);
+                echo json_encode([
+                    'message' => 'The lastname cannot be empty.'
+                ]);
+                return;
+                }
+                if (empty($requestData['address']) || preg_match('/^\s*$/', $requestData['address'])) {
+                http_response_code(400);
+                echo json_encode([
+                    'message' => 'The address cannot be empty.'
+                ]);
+                return;
+                }
+                if (empty($requestData['city']) || preg_match('/^\s*$/', $requestData['city'])) {
+                http_response_code(400);
+                echo json_encode([
+                    'message' => 'The city cannot be empty.'
+                ]);
+                return;
+                }
+                if (empty($requestData['mobile']) || preg_match('/^\s*$/', $requestData['mobile'])) {
+                http_response_code(400);
+                echo json_encode([
+                    'message' => 'The mobile cannot be empty.'
+                ]);
+                return;
+                }
+                if (empty($requestData['email']) || preg_match('/^\s*$/', $requestData['email'])) {
+                http_response_code(400);
+                echo json_encode([
+                    'message' => 'The email cannot be empty.'
+                ]);
+                return;
+                }
+                if ((int)$requestData['zipCode'] === 0 || preg_match('/^\s*$/', $requestData['zipCode'])) {
+                    http_response_code(400);
+                    echo json_encode([
+                        'message' => 'The zip code cannot be 0.'
+                    ]);
+                    return;
+                }
+                $requestData["firstName"] = filter_var($requestData["firstName"],FILTER_SANITIZE_SPECIAL_CHARS);
+                $requestData["lastName"] = filter_var($requestData["lastName"],FILTER_SANITIZE_SPECIAL_CHARS);
+                $requestData["address"] = filter_var($requestData["address"],FILTER_SANITIZE_SPECIAL_CHARS);
+                $requestData["zipCode"] = filter_var((int)$requestData["zipCode"],FILTER_SANITIZE_NUMBER_INT);
+                $requestData["city"] = filter_var($requestData["city"],FILTER_SANITIZE_SPECIAL_CHARS);
+                $requestData["mobile"] = filter_var((int)$requestData["mobile"],FILTER_SANITIZE_NUMBER_INT);
+                $requestData["email"] = filter_var($requestData["email"],FILTER_SANITIZE_SPECIAL_CHARS);
+                $shipment = new Shipment (
+                    $requestData["firstName"],
+                    $requestData["lastName"],
+                    $requestData["address"],
+                    (int)$requestData["zipCode"],
+                    $requestData["city"],
+                    $requestData["mobile"],
+                    $requestData["email"],
+                );
+            $id = $model->$method($shipment);
             break;
         }
          if($id){

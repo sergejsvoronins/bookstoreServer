@@ -1,17 +1,7 @@
 <?php
-class User {
-    public $id = 0;
-    private $firstName = null;
-    private $lastName = null;
+class User extends Shipment {
     private $account = "";
     private $password = null;
-    private $address = null;
-    private $zipCode = 0;
-    private $city = null;
-    private $mobile = null;
-    private $email = null;
-    public $created = 0;
-    public $modified = null;
     function __construct(
         $firstName,
         $lastName,
@@ -38,17 +28,17 @@ class User {
 
     }
 
-    function getFirstName () {
-        return $this->firstName;
-    }
-    function getLastName () {
-        return $this->lastName;
-    }
-    function getEmail () {
-        return $this->email;
-    }
-    function geMobile () {
-        return $this->mobile;
-    }
+    // function getFirstName () {
+    //     return $this->firstName;
+    // }
+    // function getLastName () {
+    //     return $this->lastName;
+    // }
+    // function getEmail () {
+    //     return $this->email;
+    // }
+    // function geMobile () {
+    //     return $this->mobile;
+    // }
 
 }

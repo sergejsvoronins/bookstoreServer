@@ -10,6 +10,7 @@ require "classes/models/category-model.php";
 require "classes/models/search-model.php";
 require "classes/models/user-model.php";
 require "classes/models/order-model.php";
+require "classes/models/shipment-model.php";
 require "classes/views/bookstore-view.php";
 require "controllers/controller.php";
 if($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
@@ -26,6 +27,7 @@ $categoryModel = new CategoryModel();
 $userModel = new UserModel();
 $searchModel = new SearchModel();
 $orderModel = new OrderModel();
+$shipmentModel = new ShipmentModel();
 $controler = new Controller($bookstoreView, $method);
 
 // Creating routes
@@ -47,6 +49,7 @@ $controler->addRoute("authors/", $authorModel, "deleteAuthor", "DELETE");
 $controler->addRoute("users", $userModel, "getAllUsers", "GET");
 $controler->addRoute("search", $searchModel, "getSearchBooks", "GET");
 $controler->addRoute("orders", $orderModel, "addOrder", "POST");
+$controler->addRoute("shipments", $shipmentModel, "addShipment", "POST");
 
 
 //Starting API
