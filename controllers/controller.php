@@ -200,7 +200,6 @@ class Controller {
             break;
             case ("orders") :
                 $order = new Order (
-                   (int) $requestData["customerId"],
                    (int) $requestData["totalPrice"],
                    (int) $requestData["shipmentId"],
                    (array) $requestData["books"],
@@ -209,7 +208,6 @@ class Controller {
             break;
             case ("shipments") :
                 // Validate text fields
-                var_dump("här");
                 if (empty($requestData['firstName'] || preg_match('/^\s*$/', $requestData['firstName']))) {
                 http_response_code(400);
                 echo json_encode([
@@ -252,10 +250,10 @@ class Controller {
                 ]);
                 return;
                 }
-                if ((int)$requestData['zipCode'] === 0 || preg_match('/^\s*$/', $requestData['zipCode'])) {
+                if (empty($requestData['zipCode']) || preg_match('/^\s*$/', $requestData['zipCode'])) {
                     http_response_code(400);
                     echo json_encode([
-                        'message' => 'The zip code cannot be 0.'
+                        'message' => 'The zip code cannot be empty.'
                     ]);
                     return;
                 }
@@ -270,7 +268,7 @@ class Controller {
                     $requestData["firstName"],
                     $requestData["lastName"],
                     $requestData["address"],
-                    (int)$requestData["zipCode"],
+                    $requestData["zipCode"],
                     $requestData["city"],
                     $requestData["mobile"],
                     $requestData["email"],

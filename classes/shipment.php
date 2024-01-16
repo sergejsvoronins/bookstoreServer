@@ -5,7 +5,7 @@ class Shipment  {
     public $firstName = "";
     public $lastName = "";
     public $address = "";
-    public $zipCode = 0;
+    public $zipCode = "";
     public $city = "";
     public $mobile = "";
     public $email = "";
