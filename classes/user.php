@@ -1,11 +1,11 @@
 <?php
 class User extends Shipment {
-    private $account = "";
+    private $accountLevel = "";
     private $password = null;
     function __construct(
         $firstName,
         $lastName,
-        $account,
+        $accountLevel,
         $password,
         $address,
         $zipCode,
@@ -17,7 +17,7 @@ class User extends Shipment {
     {
         $this->firstName = $firstName;
         $this->lastName = $lastName;
-        $this->account = $account;
+        $this->accountLevel = $accountLevel;
         $this->password = $password;
         $this->address = $address;
         $this->zipCode = $zipCode;

@@ -4,6 +4,7 @@ require "classes/category.php";
 require "classes/author.php";
 require "classes/order.php";
 require "classes/shipment.php";
+require "classes/loginUser.php";
 class Controller {
     private $routes = [];
     private $view = null;
@@ -275,6 +276,27 @@ class Controller {
                 );
             $id = $model->$method($shipment);
             break;
+            case "login" :
+                if (empty($requestData['email']) || preg_match('/^\s*$/', $requestData['email'])) {
+                    http_response_code(400);
+                    echo json_encode([
+                        'message' => 'The email cannot be empty.'
+                ]);
+                return;
+                }
+                if (empty($requestData['password']) || preg_match('/^\s*$/', $requestData['email'])) {
+                    http_response_code(400);
+                    echo json_encode([
+                        'message' => 'The password cannot be empty.'
+                ]);
+                return;
+                }
+                $requestData["email"] = filter_var($requestData["email"],FILTER_SANITIZE_SPECIAL_CHARS);
+                $requestData["password"] = filter_var($requestData["password"],FILTER_SANITIZE_SPECIAL_CHARS);
+                $loginUser = new LoginUser ($requestData["email"],$requestData["password"]);
+                
+                $this->view->outputJsonCollection($model->$method($loginUser));
+                break;
         }
          if($id){
             http_response_code(201);
