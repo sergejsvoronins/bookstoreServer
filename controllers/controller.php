@@ -5,6 +5,7 @@ require "classes/author.php";
 require "classes/order.php";
 require "classes/shipment.php";
 require "classes/loginUser.php";
+require "classes/user.php";
 class Controller {
     private $routes = [];
     private $view = null;
@@ -110,8 +111,46 @@ class Controller {
     private function handlePostRoute ($model, $method, $element) : void {
         $data = file_get_contents("php://input");
         $requestData = json_decode($data, true);
-
+        $requestData["email"] = filter_var($requestData["email"],FILTER_SANITIZE_SPECIAL_CHARS) ?? null;
+        $requestData["password"] = filter_var($requestData["password"],FILTER_SANITIZE_SPECIAL_CHARS)?? null;
+        $requestData["title"] = filter_var($requestData["title"],FILTER_SANITIZE_SPECIAL_CHARS)?? null;
+        $requestData["description"] = filter_var($requestData["description"] ?? null,FILTER_SANITIZE_SPECIAL_CHARS)?? null;
+        $requestData["imgUrl"] = filter_var($requestData["imgUrl"] ?? null,FILTER_SANITIZE_URL)?? null;
+        $requestData["pages"] = filter_var((int)$requestData["pages"],FILTER_SANITIZE_NUMBER_INT)?? null;
+        $requestData["year"] = filter_var((int)$requestData["year"],FILTER_SANITIZE_NUMBER_INT)?? null;
+        $requestData["language"] = filter_var($requestData["language"],FILTER_SANITIZE_SPECIAL_CHARS)?? null;
+        $requestData["authorId"] = filter_var((int)$requestData["authorId"],FILTER_SANITIZE_NUMBER_INT)?? null;
+        $requestData["categoryId"] = filter_var((int)$requestData["categoryId"],FILTER_SANITIZE_NUMBER_INT)?? null;
+        $requestData["price"] = filter_var((int)$requestData["price"],FILTER_SANITIZE_NUMBER_INT)?? null;
+        $requestData["isbn"] = filter_var((int)$requestData["isbn"],FILTER_SANITIZE_NUMBER_INT)?? null;
+        $requestData["firstName"] = filter_var($requestData["firstName"],FILTER_SANITIZE_SPECIAL_CHARS)?? null;
+        $requestData["lastName"] = filter_var($requestData["lastName"],FILTER_SANITIZE_SPECIAL_CHARS)?? null;
+        $requestData["address"] = filter_var($requestData["address"],FILTER_SANITIZE_SPECIAL_CHARS)?? null;
+        $requestData["zipCode"] = filter_var((int)$requestData["zipCode"],FILTER_SANITIZE_NUMBER_INT)?? null;
+        $requestData["city"] = filter_var($requestData["city"],FILTER_SANITIZE_SPECIAL_CHARS)?? null;
+        $requestData["mobile"] = filter_var((int)$requestData["mobile"],FILTER_SANITIZE_NUMBER_INT)?? null;
+        $requestData["name"] = filter_var($requestData["name"] ?? null,FILTER_SANITIZE_SPECIAL_CHARS)?? null;
+        $requestData["created"] = filter_var($requestData["created"] ?? null,FILTER_SANITIZE_NUMBER_INT)?? null;
         switch($element) {
+            case ("users") :
+                if (empty($requestData['email']) || preg_match('/^\s*$/', $requestData['email'])) {
+                    http_response_code(400);
+                    echo json_encode([
+                        'message' => 'The email cannot be empty.'
+                    ]);
+                    return;
+                }
+                if (empty($requestData['password']) || preg_match('/^\s*$/', $requestData['email'])) {
+                    http_response_code(400);
+                    echo json_encode([
+                        'message' => 'The password cannot be empty.'
+                    ]);
+                    return;
+                }
+                $user = new User ($requestData["password"],$requestData["email"],);
+                
+                $id = $model->$method($user);
+                break;
             case ("books") : 
                 if ((int)$requestData['pages'] === 0) {
                 http_response_code(400);
@@ -160,16 +199,6 @@ class Controller {
                 ]);
                 return;
                 }
-                $requestData["title"] = filter_var($requestData["title"],FILTER_SANITIZE_SPECIAL_CHARS);
-                $requestData["description"] = filter_var($requestData["description"] ?? null,FILTER_SANITIZE_SPECIAL_CHARS);
-                $requestData["imgUrl"] = filter_var($requestData["imgUrl"] ?? null,FILTER_SANITIZE_URL);
-                $requestData["pages"] = filter_var((int)$requestData["pages"],FILTER_SANITIZE_NUMBER_INT);
-                $requestData["year"] = filter_var((int)$requestData["year"],FILTER_SANITIZE_NUMBER_INT);
-                $requestData["language"] = filter_var($requestData["language"],FILTER_SANITIZE_SPECIAL_CHARS);
-                $requestData["authorId"] = filter_var((int)$requestData["authorId"],FILTER_SANITIZE_NUMBER_INT);
-                $requestData["categoryId"] = filter_var((int)$requestData["categoryId"],FILTER_SANITIZE_NUMBER_INT);
-                $requestData["price"] = filter_var((int)$requestData["price"],FILTER_SANITIZE_NUMBER_INT);
-                $requestData["isbn"] = filter_var((int)$requestData["isbn"],FILTER_SANITIZE_NUMBER_INT);
                 $book = new Book (
                     $requestData["title"],
                     $requestData["description"],
@@ -258,13 +287,7 @@ class Controller {
                     ]);
                     return;
                 }
-                $requestData["firstName"] = filter_var($requestData["firstName"],FILTER_SANITIZE_SPECIAL_CHARS);
-                $requestData["lastName"] = filter_var($requestData["lastName"],FILTER_SANITIZE_SPECIAL_CHARS);
-                $requestData["address"] = filter_var($requestData["address"],FILTER_SANITIZE_SPECIAL_CHARS);
-                $requestData["zipCode"] = filter_var((int)$requestData["zipCode"],FILTER_SANITIZE_NUMBER_INT);
-                $requestData["city"] = filter_var($requestData["city"],FILTER_SANITIZE_SPECIAL_CHARS);
-                $requestData["mobile"] = filter_var((int)$requestData["mobile"],FILTER_SANITIZE_NUMBER_INT);
-                $requestData["email"] = filter_var($requestData["email"],FILTER_SANITIZE_SPECIAL_CHARS);
+
                 $shipment = new Shipment (
                     $requestData["firstName"],
                     $requestData["lastName"],
@@ -281,18 +304,16 @@ class Controller {
                     http_response_code(400);
                     echo json_encode([
                         'message' => 'The email cannot be empty.'
-                ]);
-                return;
+                    ]);
+                    return;
                 }
                 if (empty($requestData['password']) || preg_match('/^\s*$/', $requestData['email'])) {
                     http_response_code(400);
                     echo json_encode([
                         'message' => 'The password cannot be empty.'
-                ]);
-                return;
+                    ]);
+                    return;
                 }
-                $requestData["email"] = filter_var($requestData["email"],FILTER_SANITIZE_SPECIAL_CHARS);
-                $requestData["password"] = filter_var($requestData["password"],FILTER_SANITIZE_SPECIAL_CHARS);
                 $loginUser = new LoginUser ($requestData["email"],$requestData["password"]);
                 
                 $this->view->outputJsonCollection($model->$method($loginUser));
@@ -313,17 +334,7 @@ class Controller {
             switch($element) {
                 case ("books") : 
                     $item = "Book";
-                    $requestData["title"] = filter_var($requestData["title"] ?? null,FILTER_SANITIZE_SPECIAL_CHARS);
-                    $requestData["description"] = filter_var($requestData["description"] ?? null,FILTER_SANITIZE_SPECIAL_CHARS);
-                    $requestData["imgUrl"] = filter_var($requestData["imgUrl"] ?? null,FILTER_SANITIZE_URL);
-                    $requestData["pages"] = filter_var($requestData["pages"] ?? null,FILTER_SANITIZE_NUMBER_INT);
-                    $requestData["year"] = filter_var($requestData["year"] ?? null,FILTER_SANITIZE_NUMBER_INT);
-                    $requestData["language"] = filter_var($requestData["language"] ?? null,FILTER_SANITIZE_SPECIAL_CHARS);
-                    $requestData["authorId"] = filter_var($requestData["authorId"] ?? null,FILTER_SANITIZE_NUMBER_INT);
-                    $requestData["categoryId"] = filter_var($requestData["categoryId"] ?? null,FILTER_SANITIZE_NUMBER_INT);
-                    $requestData["price"] = filter_var($requestData["price"] ?? null,FILTER_SANITIZE_NUMBER_INT);
-                    $requestData["isbn"] = filter_var($requestData["isbn"] ?? null,FILTER_SANITIZE_NUMBER_INT);
-                    $requestData["created"] = filter_var($requestData["created"] ?? null,FILTER_SANITIZE_NUMBER_INT);
+
                     $book = new Book (
                         $requestData["title"],
                         $requestData["description"],
@@ -340,8 +351,7 @@ class Controller {
                     break;
                 case ("categories") :
                     $item = "Category";
-                    $requestData["name"] = filter_var($requestData["name"] ?? null,FILTER_SANITIZE_SPECIAL_CHARS);
-                    $requestData["created"] = filter_var($requestData["created"] ?? null,FILTER_SANITIZE_NUMBER_INT);
+
                     $category = new Category (
                     $requestData["name"]
                     );

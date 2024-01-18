@@ -30,6 +30,7 @@ $searchModel = new SearchModel();
 $orderModel = new OrderModel();
 $shipmentModel = new ShipmentModel();
 $loginUserModel = new LoginUserModel();
+$userModel = new UserModel();
 $controler = new Controller($bookstoreView, $method);
 
 // Creating routes
@@ -49,6 +50,7 @@ $controler->addRoute("authors", $authorModel, "addAuthor", "POST");
 $controler->addRoute("authors/", $authorModel, "updateAuthor", "PUT");
 $controler->addRoute("authors/", $authorModel, "deleteAuthor", "DELETE");
 $controler->addRoute("users", $userModel, "getAllUsers", "GET");
+$controler->addRoute("users", $userModel, "addUser", "POST");
 $controler->addRoute("search", $searchModel, "getSearchBooks", "GET");
 $controler->addRoute("orders", $orderModel, "addOrder", "POST");
 $controler->addRoute("shipments", $shipmentModel, "addShipment", "POST");

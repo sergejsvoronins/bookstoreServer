@@ -3,7 +3,7 @@ require_once "classes/db.php";
 class LoginUserModel extends DB {
     
     public function loginUser (LoginUser $loginUser) {
-        $query = "SELECT c.id, c.password, c.accountLevel FROM `customers` AS c WHERE c.email = ?";
+        $query = "SELECT u.id, u.password, u.accountLevel FROM `users` AS u WHERE u.email = ?";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute([$loginUser->email]);
         
@@ -12,6 +12,12 @@ class LoginUserModel extends DB {
             return [
                 "id" => $user["id"],
                 "accountLevel" => $user["accountLevel"]
+            ];
+        }
+        else {
+            header("HTTP/1.1 400 Bad Request");
+            return [
+                "error" => "Invalid email or password"
             ];
         }
 
