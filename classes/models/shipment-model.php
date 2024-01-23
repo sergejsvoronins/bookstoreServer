@@ -15,6 +15,11 @@ class ShipmentModel extends DB {
         $stmt = $this->pdo->prepare($query);
         $stmt->execute([$shipment->firstName,$shipment->lastName,$shipment->address,
             $shipment->zipCode,$shipment->city,$shipment->mobile,$shipment->email,$shipment->created]);
-        return $this->pdo->lastInsertId();
+        if($stmt->rowCount() !== 0) {
+            return $stmt->rowCount();
+        }
+        else {
+            header("HTTP/1.1 400 Bad Request");
+        }
     }
 }

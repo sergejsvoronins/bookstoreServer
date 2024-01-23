@@ -9,7 +9,7 @@ class BookstoreView {
             echo json_encode($data);
         }
     }
-        public function outputJsonSingle( $data) : void {
-            echo json_encode($data);
+    public function outputJsonSingle( $data) : void {
+        echo json_encode($data[0]);
     }
 }

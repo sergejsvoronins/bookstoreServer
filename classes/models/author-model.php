@@ -5,6 +5,13 @@ class AuthorModel extends DB {
     public function getAllAuthors () : array {
         return $this->getAll($this->table);
     }
+    public function getOneAuthor (int $id) : array {
+            $query = "SELECT * FROM `authors` AS a
+            WHERE a.id = ?";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->execute([$id]);
+            return $stmt->fetchAll();
+    }
     public function addAuthor (Author $author) : string {
         $query = "INSERT INTO `authors`(
         `name`, 
@@ -19,7 +26,12 @@ class AuthorModel extends DB {
             `modified`=? WHERE authors.id = ?";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute([$author->name, time(), $id]);
-        return $stmt->rowCount();
+        if($stmt->rowCount() !== 0) {
+            return $stmt->rowCount();
+        }
+        else {
+            header("HTTP/1.1 400 Bad Request");
+        }
     }
     public function deleteAuthor (int $id) : void {
         $query = "DELETE FROM `authors` WHERE authors.id = ?";

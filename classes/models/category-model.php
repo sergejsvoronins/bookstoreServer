@@ -10,13 +10,34 @@ class CategoryModel extends DB {
         $stmt->execute();
         return $stmt->fetchAll(); 
     }
-    public function getCategoryBooks (int $id) : array {
-        $query = "SELECT c.id, c.name, b.id, b.title, b.imgUrl, b.price FROM `categories` AS c
+    public function getCategoryBooks (int $id) {
+        $queryCategoryBooks = "SELECT b.id AS bookId, b.title, b.imgUrl, b.price FROM `categories` AS c
         JOIN books AS b ON c.id = b.categoryId
         WHERE c.id = ?";
-        $stmt = $this->pdo->prepare($query);
+        $stmt = $this->pdo->prepare($queryCategoryBooks);
         $stmt->execute([$id]);
-        return $stmt->fetchAll();
+        $books =  $stmt->fetchAll();
+        $queryCategory = "SELECT * FROM `categories` AS c
+        WHERE c.id = ?";
+        $stmt = $this->pdo->prepare($queryCategory);
+        $stmt->execute([$id]);
+        $category = $stmt->fetchAll()[0];
+        if($category == NULL) {
+            header("HTTP/1.1 400 Bad Request");
+            echo json_encode([
+                "error" => "Categoty does not exist"
+                
+            ]);
+        }
+        else {
+            return [
+                "id" => $category["id"],
+                "name" => $category["name"],
+                "books" => $books
+            ];    
+
+        }
+
     }
     public function addCategory (Category $category) : string{
         $query = "INSERT INTO `categories`(`name`, `created`) VALUES (?,?)";
@@ -30,7 +51,12 @@ class CategoryModel extends DB {
         `modified`=? WHERE categories.id = ?";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute([$category->name, time(), $id]);
-        return $stmt->rowCount();
+        if($stmt->rowCount() !== 0) {
+            return $stmt->rowCount();
+        }
+        else {
+            header("HTTP/1.1 400 Bad Request");
+        }
     }
     public function deleteCategory (int $id) {
         $query = "DELETE FROM `categories` WHERE categories.id = ?";

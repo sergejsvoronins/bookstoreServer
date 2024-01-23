@@ -23,7 +23,6 @@ class Controller {
     }
     public function start($request): void
     {
-
         $parts = explode("/", $request);
         $url = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY);
         $queryParams = parse_str($url, $params);
@@ -74,24 +73,35 @@ class Controller {
 
         if ($id || $id === "") {
             $response = $model->$method((int)$id);
-            
             if (count($response)!=0) {
                 switch ($model->getTable()) {
-                        case "categories" : 
-                                $this->view->outputJsonSingle($model->$method((int)$id));
-                                break;
-                        case "authors" : 
-                                $this->view->outputJsonSingle($model->$method((int)$id));
-                                break;
-                        case "books" :
-                            $this->view->outputJsonSingle($model->$method((int)$id)[0]);
-                            break;
-                        // case "search" :
+                    case "categories" : 
+                        $this->view->outputJsonCollection($model->$method((int)$id));
+                        break;
+                    case "authors" : 
+                        $this->view->outputJsonSingle($model->$method((int)$id));
+                        break;
+                    case "books" :
+                        $this->view->outputJsonSingle($model->$method((int)$id));
+                        break;
+                            // case "search" :
                         //     $this->view->outputJsonCollection($model->$method())
+                    case "orders" : 
+                        $this->view->outputJsonSingle($model->$method((int)$id));
+                        break;
+                    //     case "user-orders" : 
+                    //         print_r($_SESSION);
+                    //         if(isset($_SESSION["userId"])) {
+                    //     $this->view->outputJsonSingle($model->$method((int)$id));
+                    // }
+                    // break;
+                    case "userorders" : 
+                        $this->view->outputJsonSingle($model->$method((int)$id));
+                        break;
                         default :
-                            $this->view->outputJsonSingle($model->$method((int)$id)[0]);
-                            break;
-                        }
+                        $this->view->outputJsonSingle($model->$method((int)$id));
+                        break;
+                    }
             }
             else {
                 http_response_code(404);
@@ -111,18 +121,18 @@ class Controller {
     private function handlePostRoute ($model, $method, $element) : void {
         $data = file_get_contents("php://input");
         $requestData = json_decode($data, true);
-        $requestData["email"] = filter_var($requestData["email"],FILTER_SANITIZE_SPECIAL_CHARS) ?? null;
+        $requestData["email"] = filter_var(filter_var($requestData["email"],FILTER_VALIDATE_EMAIL),FILTER_SANITIZE_SPECIAL_CHARS) ?? null;
         $requestData["password"] = filter_var($requestData["password"],FILTER_SANITIZE_SPECIAL_CHARS)?? null;
         $requestData["title"] = filter_var($requestData["title"],FILTER_SANITIZE_SPECIAL_CHARS)?? null;
         $requestData["description"] = filter_var($requestData["description"] ?? null,FILTER_SANITIZE_SPECIAL_CHARS)?? null;
-        $requestData["imgUrl"] = filter_var($requestData["imgUrl"] ?? null,FILTER_SANITIZE_URL)?? null;
-        $requestData["pages"] = filter_var((int)$requestData["pages"],FILTER_SANITIZE_NUMBER_INT)?? null;
+        $requestData["imgUrl"] = filter_var(filter_var($requestData["imgUrl"],FILTER_VALIDATE_URL),FILTER_SANITIZE_URL)?? null;
+        $requestData["pages"] = filter_var(filter_var($requestData["pages"],FILTER_VALIDATE_INT),FILTER_SANITIZE_NUMBER_INT)?? null;
         $requestData["year"] = filter_var((int)$requestData["year"],FILTER_SANITIZE_NUMBER_INT)?? null;
         $requestData["language"] = filter_var($requestData["language"],FILTER_SANITIZE_SPECIAL_CHARS)?? null;
         $requestData["authorId"] = filter_var((int)$requestData["authorId"],FILTER_SANITIZE_NUMBER_INT)?? null;
         $requestData["categoryId"] = filter_var((int)$requestData["categoryId"],FILTER_SANITIZE_NUMBER_INT)?? null;
         $requestData["price"] = filter_var((int)$requestData["price"],FILTER_SANITIZE_NUMBER_INT)?? null;
-        $requestData["isbn"] = filter_var((int)$requestData["isbn"],FILTER_SANITIZE_NUMBER_INT)?? null;
+        $requestData["isbn"] = filter_var($requestData["isbn"],FILTER_SANITIZE_SPECIAL_CHARS)?? null;
         $requestData["firstName"] = filter_var($requestData["firstName"],FILTER_SANITIZE_SPECIAL_CHARS)?? null;
         $requestData["lastName"] = filter_var($requestData["lastName"],FILTER_SANITIZE_SPECIAL_CHARS)?? null;
         $requestData["address"] = filter_var($requestData["address"],FILTER_SANITIZE_SPECIAL_CHARS)?? null;
@@ -140,14 +150,33 @@ class Controller {
                     ]);
                     return;
                 }
-                if (empty($requestData['password']) || preg_match('/^\s*$/', $requestData['email'])) {
+                if (empty($requestData['password']) || preg_match('/^\s*$/', $requestData['password'])) {
                     http_response_code(400);
                     echo json_encode([
                         'message' => 'The password cannot be empty.'
                     ]);
                     return;
                 }
-                $user = new User ($requestData["password"],$requestData["email"],);
+                if(strlen($requestData["password"])<6) {
+                    http_response_code(400);
+                    echo json_encode([
+                        "message" => "The password must have at least 6 signs"
+                    ]);
+                }
+                
+                // if (! preg_match("/[a-z]/i", $requestData["password"])) {
+                //     http_response_code(400);
+                //     echo json_encode([
+                //         "message" => "The password must containt at least 1 letter"
+                //     ]);
+                // }
+                // if (! preg_match("/[0-9]/i", $requestData["password"])) {
+                //     http_response_code(400);
+                //     echo json_encode([
+                //         "message" => "The password must containt at least 1 letter"
+                //     ]);
+                // }
+                $user = new User ($requestData["password"],$requestData["email"]);
                 
                 $id = $model->$method($user);
                 break;
@@ -209,7 +238,7 @@ class Controller {
                     (int) $requestData["authorId"],
                     (int) $requestData["categoryId"],
                     (int) $requestData["price"],
-                    (int) $requestData["isbn"],
+                    $requestData["isbn"],
                 );
                 $id = $model->$method($book);
                 break;
@@ -218,7 +247,7 @@ class Controller {
                 $category = new Category (
                     $requestData["name"]
                 );
-            $id = $model->$method($category);
+                $id = $model->$method($category);
             break;
             case ("authors") :
                 $requestData["name"] = filter_var($requestData["name"],FILTER_SANITIZE_SPECIAL_CHARS);
@@ -226,13 +255,24 @@ class Controller {
                     $requestData["name"],
 
                 );
-            $id = $model->$method($author);
+                $id = $model->$method($author);
             break;
             case ("orders") :
                 $order = new Order (
-                   (int) $requestData["totalPrice"],
-                   (int) $requestData["shipmentId"],
-                   (array) $requestData["books"],
+                    (int) $requestData["totalPrice"],
+                    NULL,
+                    (int) $requestData["shipmentId"],
+                    (array) $requestData["books"],
+                );
+               
+            $id = $model->$method($order);
+            break;
+            case ("user-orders") :
+                $order = new Order (
+                    (int) $requestData["totalPrice"],
+                    (int)$requestData["userId"],
+                    (int) $requestData["shipmentId"],
+                    (array) $requestData["books"],
                 );
             $id = $model->$method($order);
             break;
@@ -332,9 +372,66 @@ class Controller {
             $data = file_get_contents("php://input");
             $requestData = json_decode($data, true);
             switch($element) {
+                case ("user-password") :
+                if (empty($requestData['password']) || preg_match('/^\s*$/', $requestData['password'])) {
+                    http_response_code(400);
+                    echo json_encode([
+                        'message' => 'The password cannot be empty.'
+                    ]);
+                    return;
+                }
+                    $user = new User ($requestData["password"]);
+                    $response = $model->$method($user, $id);
+                    break;
+                case ("user-level") :
+                    $user = new User (
+                        $requestData['firstName'],
+                        $requestData['lastName'],
+                        $requestData['address'],
+                        $requestData['zipCode'],
+                        $requestData['city'],
+                        $requestData['mobile'],
+                        $requestData['accountLevel'],
+                    );
+                    
+                    $response = $model->$method($user, $id);
+                    break;
+                case ("users") :
+                    $item = "User";
+                    if (empty(
+                        $requestData['firstName'] ||
+                        $requestData['lastName'] ||
+                        $requestData['address'] ||
+                        $requestData['zipCode'] ||
+                        $requestData['city'] ||
+                        $requestData['mobile']) 
+                        || preg_match('/^\s*$/', 
+                        $requestData['firstName'] ||
+                        $requestData['lastName'] ||
+                        $requestData['address'] ||
+                        $requestData['zipCode'] ||
+                        $requestData['city'] ||
+                        $requestData['mobile']
+                        )) {
+                        http_response_code(400);
+                        echo json_encode([
+                            'message' => 'The fields can not be empty.'
+                        ]);
+                        return;
+                    }
+                    $user = new User (
+                        $requestData['firstName'],
+                        $requestData['lastName'],
+                        $requestData['address'],
+                        $requestData['zipCode'],
+                        $requestData['city'],
+                        $requestData['mobile'],
+                    );
+                    
+                    $response = $model->$method($user, $id);
+                    break;
                 case ("books") : 
                     $item = "Book";
-
                     $book = new Book (
                         $requestData["title"],
                         $requestData["description"],
@@ -345,13 +442,13 @@ class Controller {
                         (int) $requestData["authorId"],
                         (int) $requestData["categoryId"],
                         (int) $requestData["price"],
-                        (int) $requestData["isbn"]
+                        $requestData["isbn"]
                     );
                     $response = $model->$method($book, $id);
                     break;
                 case ("categories") :
                     $item = "Category";
-
+                    $requestData["name"] = filter_var($requestData["name"] ?? null,FILTER_SANITIZE_SPECIAL_CHARS);
                     $category = new Category (
                     $requestData["name"]
                     );
@@ -360,11 +457,22 @@ class Controller {
                 case ("authors") :
                     $item = "Author";
                     $requestData["name"] = filter_var($requestData["name"] ?? null,FILTER_SANITIZE_SPECIAL_CHARS);
-                    $requestData["created"] = filter_var($requestData["created"] ?? null,FILTER_SANITIZE_NUMBER_INT);
                     $author = new Author (
                     $requestData["name"],
                     );
                     $response = $model->$method($author, $id);
+                    break;
+                case ("orders") :
+                    $order = new Order (
+                        $requestData["orderStatus"]
+                    );
+                    $response = $model->$method($order, $id);
+                    break;
+                    case ("user-orders") :
+                        $order = new Order (
+                            $requestData["orderStatus"]
+                        );
+                    $response = $model->$method($order, $id);
                     break;
             }
             if($response!=0){

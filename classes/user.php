@@ -1,30 +1,62 @@
 <?php
 class User extends Shipment {
     private $accountLevel = "";
-    private $password = "";
-    function __construct(
-        // $firstName,
-        // $lastName,
-        // $accountLevel,
+    private $password = "user";
+
+    function __construct() {
+        $arguments = func_get_args();
+        $numberOfArguments = func_num_args();
+        if (method_exists($this, $function = '__construct'.$numberOfArguments)) {
+            call_user_func_array(array($this, $function), $arguments);
+        }
+    }
+    function __construct1($password) {
+        $this->password = $password;
+    }
+    function __construct2(
         $password,
-        // $address,
-        // $zipCode,
-        // $city,
-        // $mobile,
         $email
     )
     {
-        // $this->firstName = $firstName;
-        // $this->lastName = $lastName;
-        $this->accountLevel = "user";
         $this->password = $password;
-        // $this->address = $address;
-        // $this->zipCode = $zipCode;
-        // $this->city = $city;
-        // $this->mobile = $mobile;
         $this->email = $email;
+        $this->accountLevel = "user";
         $this->created = time();
 
+    }
+    function __construct6(
+        $firstName,
+        $lastName,
+        $address,
+        $zipCode,
+        $city,
+        $mobile,
+    )
+    {
+        $this->firstName = $firstName;
+        $this->lastName = $lastName;
+        $this->address = $address;
+        $this->zipCode = $zipCode;
+        $this->city = $city;
+        $this->mobile = $mobile;
+    }
+    function __construct7(
+        $firstName,
+        $lastName,
+        $address,
+        $zipCode,
+        $city,
+        $mobile,
+        $accountLevel
+    )
+    {
+        $this->firstName = $firstName;
+        $this->lastName = $lastName;
+        $this->address = $address;
+        $this->zipCode = $zipCode;
+        $this->city = $city;
+        $this->mobile = $mobile;
+        $this->accountLevel = $accountLevel;
     }
     function getPassword () {
         return $this->password;
@@ -32,17 +64,5 @@ class User extends Shipment {
     function getAcccountLevel () {
         return $this->accountLevel;
     }
-    // function getFirstName () {
-    //     return $this->firstName;
-    // }
-    // function getLastName () {
-    //     return $this->lastName;
-    // }
-    // function getEmail () {
-    //     return $this->email;
-    // }
-    // function geMobile () {
-    //     return $this->mobile;
-    // }
 
 }

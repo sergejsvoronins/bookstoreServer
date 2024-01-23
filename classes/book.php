@@ -10,7 +10,7 @@ class Book {
     public $authorId = 0;
     public $categoryId = 0;
     public $price = 0;
-    public $isbn = 0;
+    public $isbn = "";
     public $created = 0;
     public $modified = null;
     function __construct($title, $description, $imgUrl, $pages,$year,$language,$authorId,$categoryId, $price, $isbn) {

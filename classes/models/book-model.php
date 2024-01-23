@@ -5,7 +5,7 @@ class BookModel extends DB
     protected $table = "books";
     public function getAllBooks(): array
     {
-        $query = "SELECT b.id, title, description, imgUrl, pages, year, language, price, isbn, a.name AS author, c.name AS category FROM `books` AS b
+        $query = "SELECT b.id, title, description, imgUrl, pages, year, language, price, isbn, b.authorId, a.name AS author, b.categoryId, c.name AS category FROM `books` AS b
             JOIN authors AS a ON a.id = b.authorId
             JOIN categories AS c ON c.id = b.categoryId";
         $stmt = $this->pdo->prepare($query);
@@ -15,7 +15,7 @@ class BookModel extends DB
     }
     public function getSingleBook(int $id)
     {
-        $query = "SELECT b.id, title, description, imgUrl, pages, year, language, price, isbn, a.name AS author, c.name AS category FROM `books` AS b
+        $query = "SELECT b.id, title, description, imgUrl, pages, year, language, price, isbn, b.authorId, a.name AS author, b.categoryId, c.name AS category FROM `books` AS b
             JOIN authors AS a ON a.id = b.authorId
             JOIN categories AS c ON c.id = b.categoryId
             WHERE b.id = ?";
@@ -58,7 +58,12 @@ class BookModel extends DB
             `modified`=? WHERE books.id = ?";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute([$book->title, $book->description,$book->imgUrl, $book->pages, $book->year, $book->language, $book->authorId, $book->categoryId, $book->price, $book->isbn, time(), $id]);
-        return $stmt->rowCount();
+        if($stmt->rowCount() !== 0) {
+            return $stmt->rowCount();
+        }
+        else {
+            header("HTTP/1.1 400 Bad Request");
+        }
     }
     public function deleteBook (int $id) : void {
         $query = "DELETE FROM `books` WHERE books.id = ?";
