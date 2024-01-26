@@ -86,7 +86,7 @@ class Controller {
                         break;
                             // case "search" :
                         //     $this->view->outputJsonCollection($model->$method())
-                    case "orders" : 
+                    case "orders" :
                         $this->view->outputJsonSingle($model->$method((int)$id));
                         break;
                     //     case "user-orders" : 
@@ -96,11 +96,16 @@ class Controller {
                     // }
                     // break;
                     case "userorders" : 
+                        if($method === "getAllUsersOrders") {
+                            $this->view->outputJsonCollection($model->$method((int)$id));
+                            return;
+                        } 
                         $this->view->outputJsonSingle($model->$method((int)$id));
                         break;
-                        default :
+                    default :
                         $this->view->outputJsonSingle($model->$method((int)$id));
-                        break;
+                    break;
+
                     }
             }
             else {
@@ -373,15 +378,15 @@ class Controller {
             $requestData = json_decode($data, true);
             switch($element) {
                 case ("user-password") :
-                if (empty($requestData['password']) || preg_match('/^\s*$/', $requestData['password'])) {
+                if (empty($requestData['password']) || preg_match('/^\s*$/', $requestData['password']) || strlen($requestData["password"]) <6) {
                     http_response_code(400);
                     echo json_encode([
-                        'message' => 'The password cannot be empty.'
+                        'message' => 'The password is in wrong formate.'
                     ]);
                     return;
                 }
                     $user = new User ($requestData["password"]);
-                    $response = $model->$method($user, $id);
+                    $response = $model->$method($user, $id, $requestData["oldPassword"]);
                     break;
                 case ("user-level") :
                     $user = new User (

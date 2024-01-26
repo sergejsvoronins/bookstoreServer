@@ -56,12 +56,25 @@ class UserModel extends DB {
         $stmt = $this->pdo->prepare($query);
         $stmt->execute([$id]);
     }
-    public function updatePassword (User $user, int $id, ) {
-        $hashedPassword = password_hash($user->getPassword(), PASSWORD_DEFAULT);
-        $query = "UPDATE `users` AS u SET `password`= ?, `modified`= ? WHERE u.id = ?";
-        $stmt = $this->pdo->prepare($query);
-        $stmt->execute([$hashedPassword, time(), $id]);
-        return $stmt->rowCount();
+    public function updatePassword (User $user, int $id, $oldPassword ) {
+        $queryUser = "SELECT u.password FROM `users` AS u WHERE u.id = ?";
+        $stmt = $this->pdo->prepare($queryUser);
+        $stmt->execute([$id]);
+        $userPassword =  $stmt->fetchAll()[0];
+        if (password_verify($oldPassword, $userPassword["password"])) {
+            $hashedPassword = password_hash($user->getPassword(), PASSWORD_DEFAULT);
+            $query = "UPDATE `users` AS u SET `password`= ?, `modified`= ? WHERE u.id = ?";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->execute([$hashedPassword, time(), $id]);
+            return $stmt->rowCount();
+        }
+        else {
+            header("HTTP/1.1 400 Bad Request");
+            http_response_code(400);
+            echo json_encode([
+                'message' => 'The old password is not correct.'
+            ]);
+        }
     }
     public function getTable () {
         return $this->table;

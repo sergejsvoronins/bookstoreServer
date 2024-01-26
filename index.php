@@ -38,6 +38,7 @@ $controler = new Controller($bookstoreView, $method);
 // Creating routes
 
 $controler->addRoute("books", $bookModel, "getAllBooks", "GET");
+$controler->addRoute("top-books", $bookModel, "getTopFive", "GET");
 $controler->addRoute("books/", $bookModel, "getSingleBook", "GET");
 $controler->addRoute("books", $bookModel, "addBook", "POST");
 $controler->addRoute("books/", $bookModel, "updateBook", "PUT");
@@ -65,7 +66,8 @@ $controler->addRoute("orders/", $orderModel, "getOneOrder", "GET");
 $controler->addRoute("orders", $orderModel, "addOrder", "POST");
 $controler->addRoute("orders/", $orderModel, "updateOrder", "PUT");
 $controler->addRoute("orders/", $orderModel, "deleteOrder", "DELETE");
-$controler->addRoute("user-orders/", $userOrderModel, "getAllUserOrders", "GET");
+$controler->addRoute("user-orders", $userOrderModel, "getAllUserOrders", "GET");
+$controler->addRoute("user-orders/", $userOrderModel, "getAllUsersOrders", "GET");
 $controler->addRoute("user-order/", $userOrderModel, "getOneUserOrder", "GET");
 $controler->addRoute("user-orders", $userOrderModel, "addUserOrder", "POST");
 $controler->addRoute("user-orders/", $userOrderModel, "updateUserOrder", "PUT");

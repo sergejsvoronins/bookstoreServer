@@ -22,11 +22,33 @@ class UserOrderModel extends DB {
         }
         return $orderId;
     }
-    public function getAllUserOrders (int $id) {
-        $query = "SELECT `id`, `orderStatus`, `orderDate` FROM `userorders` WHERE userId = ?";
+    public function getAllUserOrders () {
+        $query = "SELECT `id`, `orderDate`,`orderStatus` FROM `userorders`";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+       return $stmt->fetchAll();
+    }
+    public function getAllUsersOrders (int $id) {
+        $query = "SELECT * FROM `userorders` WHERE userId = ?";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute([$id]);
-       return $stmt->fetchAll();
+        $orders =$stmt->fetchAll();
+        for ($i = 0; $i < count($orders); $i++) {
+            $queryOrderBooks = "SELECT b.id AS bookId, b.title, b.imgUrl, ui.amount, b.price as bookPrice FROM `userorderitems` AS ui
+                JOIN books AS b ON ui.bookId = b.id
+                WHERE ui.userOrderId = ?";
+            $stmt = $this->pdo->prepare($queryOrderBooks);
+            $stmt->execute([$orders[$i]["id"]]);
+            $books = $stmt->fetchAll();
+            
+            $queryShipment = "SELECT `firstName`, `lastName`, `address`, `zipCode`, `city`, `mobile`, `email`, `created`, `modified` FROM `shipments` AS s WHERE s.id = ?";
+            $stmt = $this->pdo->prepare($queryShipment);
+            $stmt->execute([$orders[$i]["shipmentId"]]);
+            $shipment = $stmt->fetchAll()[0];
+            $orders[$i]["books"] = $books;
+            $orders[$i]["shipmentDetails"] = $shipment;
+        }
+        return $orders;   
     }
     public function getOneUserOrder (int $id) {
         $queryOrder = "SELECT * FROM `userorders` AS u WHERE u.id = ?";
@@ -36,8 +58,8 @@ class UserOrderModel extends DB {
         $queryShipment = "SELECT `firstName`, `lastName`, `address`, `zipCode`, `city`, `mobile`, `email`, `created`, `modified` FROM `shipments` AS s WHERE s.id = ?";
         $stmt = $this->pdo->prepare($queryShipment);
         $stmt->execute([$order[0]["shipmentId"]]);
-        $shipment = $stmt->fetchAll();
-        $queryOrderBooks = "SELECT b.* FROM `userorderitems` AS ui
+        $shipment = $stmt->fetchAll()[0];
+        $queryOrderBooks = "SELECT b.id AS bookId, b.title, ui.amount, b.price as bookPrice FROM `userorderitems` AS ui
             JOIN books AS b ON ui.bookId = b.id
             WHERE ui.userOrderId = ?";
         $stmt = $this->pdo->prepare($queryOrderBooks);
@@ -56,7 +78,13 @@ class UserOrderModel extends DB {
         $query = "UPDATE `userorders` AS uo SET `orderStatus`= ?,`Modified`= ? WHERE uo.id = ?";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute([$order->orderStatus, time(), $id]);
-        return $stmt->fetchAll();
+        if($stmt->fetchAll()) {
+            return $stmt->fetchAll();
+        }
+        else {
+            header("HTTP/1.1 400 Bad Request");
+            http_response_code(400);
+        }
     }
     public function getTable () {
         return $this->table;

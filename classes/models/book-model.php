@@ -63,6 +63,7 @@ class BookModel extends DB
         }
         else {
             header("HTTP/1.1 400 Bad Request");
+            http_response_code(400);
         }
     }
     public function deleteBook (int $id) : void {
@@ -72,6 +73,24 @@ class BookModel extends DB
     }
         public function getTable () {
         return $this->table;
+    }
+
+    public function getTopFive () : array {
+        $query = "SELECT b.id, b.title, b.imgUrl, b.price, COUNT(b.id) AS amount
+            FROM books AS b
+            JOIN (
+            SELECT bookId
+            FROM orderitems
+            UNION ALL
+            SELECT bookId
+            FROM userorderitems
+            ) AS oi ON b.id = oi.bookId
+            GROUP BY b.id
+            ORDER BY amount DESC
+            LIMIT 10";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll();
     }
 }
 

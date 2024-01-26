@@ -41,8 +41,8 @@ class OrderModel extends DB {
         $queryShipment = "SELECT `firstName`, `lastName`, `address`, `zipCode`, `city`, `mobile`, `email`, `created`, `modified` FROM `shipments` AS s WHERE s.id = ?";
         $stmt = $this->pdo->prepare($queryShipment);
         $stmt->execute([$order[0]["shipmentId"]]);
-        $shipment = $stmt->fetchAll();
-        $queryOrderBooks = "SELECT b.* FROM `orderitems` AS oi
+        $shipment = $stmt->fetchAll()[0];
+        $queryOrderBooks = "SELECT b.id AS bookId, b.title, oi.amount, b.price as bookPrice FROM `orderitems` AS oi
             JOIN books AS b ON oi.bookId = b.id
             WHERE oi.orderId = ?";
         $stmt = $this->pdo->prepare($queryOrderBooks);
@@ -56,7 +56,13 @@ class OrderModel extends DB {
         $query = "UPDATE `orders` AS o SET `orderStatus`= ?,`Modified`= ? WHERE o.id = ?";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute([$order->orderStatus, time(), $id]);
-        return $stmt->fetchAll();
+        if($stmt->fetchAll()) {
+            return $stmt->fetchAll();
+        }
+        else {
+            header("HTTP/1.1 400 Bad Request");
+            http_response_code(400);
+        }
     }
     public function getTable () {
         return $this->table;
