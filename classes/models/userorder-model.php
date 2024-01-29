@@ -3,9 +3,9 @@ require_once "classes/db.php";
 class UserOrderModel extends DB {
     protected $table = "userorders";
     public function addUserOrder (Order $order) : string {
-        $query = "INSERT INTO `userorders`( `orderDate`, `totalPrice`, `userId`, `shipmentId`) VALUES (?,?,?,?)";
+        $query = "INSERT INTO `userorders`( `orderDate`, `totalPrice`, `userId`, `shipmentId`, `orderStatus`) VALUES (?,?,?,?,?)";
         $stmt = $this->pdo->prepare($query);
-        $stmt->execute([$order->orderDate, $order->totalPrice, $order->userId,  $order->shipmentId]);
+        $stmt->execute([$order->orderDate, $order->totalPrice, $order->userId,  $order->shipmentId, $order->orderStatus]);
         $orderId = $this->pdo->lastInsertId();
         foreach ($order->books as $book) {
             $query = "INSERT INTO `userorderitems`(

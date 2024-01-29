@@ -4,13 +4,14 @@ class OrderModel extends DB {
     protected $table = "orders";
 
     public function addOrder (Order $order) : string {
-            $query = "INSERT INTO `orders`(
+        $query = "INSERT INTO `orders`(
             `orderDate`,
             `totalPrice`,
-            `shipmentId`) VALUES (?,?,?)";
+            `shipmentId`, `orderStatus`) VALUES (?,?,?, ?)";
             $stmt = $this->pdo->prepare($query);
-            $stmt->execute([$order->orderDate, $order->totalPrice, $order->shipmentId]);
+            $stmt->execute([$order->orderDate, $order->totalPrice, $order->shipmentId, $order->orderStatus]);
             $orderId = $this->pdo->lastInsertId();
+            var_dump("här");
             foreach ($order->books as $book) {
                 $query = "INSERT INTO `orderItems`(
                         `orderId`,
