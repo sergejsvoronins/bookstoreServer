@@ -1,6 +1,6 @@
 # Bookstore REST API documentation
 
-Manage your bookstore with this API that handles books, orders, users, categories and authors. Built with PHP, this API provides a robust foundation for your online bookstore, including admin panel.
+Manage your bookstore with this API that handles books, orders, users, categories and authors. Built with PHP (latest PHP version 8.2), this API provides a robust foundation for your online bookstore, including admin panel.
 
 Features:
 
