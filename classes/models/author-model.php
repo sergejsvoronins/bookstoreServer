@@ -20,7 +20,7 @@ class AuthorModel extends DB {
         $stmt->execute([$author->name, $author->created]);
         return $this->pdo->lastInsertId();
     }
-    public function updateAuthor (Author $author, int $id) : int {
+    public function updateAuthor (Author $author, int $id) {
         $query = "UPDATE `authors` SET 
             `name`= ?,
             `modified`=? WHERE authors.id = ?";

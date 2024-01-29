@@ -38,7 +38,7 @@ $controler = new Controller($bookstoreView, $method);
 // Creating routes
 
 $controler->addRoute("books", $bookModel, "getAllBooks", "GET");
-$controler->addRoute("top-books", $bookModel, "getTopFive", "GET");
+$controler->addRoute("top-books", $bookModel, "getTopBooks", "GET");
 $controler->addRoute("books/", $bookModel, "getSingleBook", "GET");
 $controler->addRoute("books", $bookModel, "addBook", "POST");
 $controler->addRoute("books/", $bookModel, "updateBook", "PUT");
@@ -77,4 +77,5 @@ $controler->addRoute("login", $loginUserModel, "loginUser", "POST");
 
 
 //Starting API
+
 $controler->start($request);

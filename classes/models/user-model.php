@@ -52,6 +52,7 @@ class UserModel extends DB {
         }
         else {
             header("HTTP/1.1 400 Bad Request");
+            http_response_code(400);
         }
     }
     public function deleteUser (int $id) : void {

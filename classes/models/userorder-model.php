@@ -83,7 +83,7 @@ class UserOrderModel extends DB {
         $query = "UPDATE `userorders` AS uo SET `orderStatus`= ?,`Modified`= ? WHERE uo.id = ?";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute([$order->orderStatus, time(), $id]);
-        if($stmt->fetchAll()) {
+        if($stmt->rowCount() !== 0) {
             return $stmt->fetchAll();
         }
         else {

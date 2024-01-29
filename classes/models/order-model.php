@@ -11,7 +11,6 @@ class OrderModel extends DB {
             $stmt = $this->pdo->prepare($query);
             $stmt->execute([$order->orderDate, $order->totalPrice, $order->shipmentId, $order->orderStatus]);
             $orderId = $this->pdo->lastInsertId();
-            var_dump("här");
             foreach ($order->books as $book) {
                 $query = "INSERT INTO `orderItems`(
                         `orderId`,
@@ -62,7 +61,7 @@ class OrderModel extends DB {
         $query = "UPDATE `orders` AS o SET `orderStatus`= ?,`Modified`= ? WHERE o.id = ?";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute([$order->orderStatus, time(), $id]);
-        if($stmt->fetchAll()) {
+        if($stmt->rowCount()!= 0) {
             return $stmt->fetchAll();
         }
         else {

@@ -6,7 +6,7 @@ class ShipmentModel extends DB {
     public function getAllShipments () : array {
         return $this->getAll($this->table);
     }
-    public function addShipment (Shipment $shipment) : string {
+    public function addShipment (Shipment $shipment) {
         $query = "INSERT INTO `shipments`(
             `firstName`, `lastName`, `address`,
              `zipCode`, `city`, `mobile`, `email`,
@@ -21,9 +21,6 @@ class ShipmentModel extends DB {
         else {
             header("HTTP/1.1 400 Bad Request");
             http_response_code(400);
-            echo json_encode([
-                'message' => "Bad request"
-            ]);
         }
     }
 }

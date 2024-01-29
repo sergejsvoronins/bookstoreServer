@@ -11,7 +11,6 @@ class BookModel extends DB
         $stmt = $this->pdo->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll();
-        // return $this->getAll($this->table);
     }
     public function getSingleBook(int $id)
     {
@@ -43,7 +42,7 @@ class BookModel extends DB
         return $this->pdo->lastInsertId();
     }
 
-    public function updateBook(Book $book, int $id) : int {
+    public function updateBook(Book $book, int $id) {
         $query = "UPDATE `books` SET 
             `title`= ?,
             `description`=?,
@@ -75,7 +74,7 @@ class BookModel extends DB
         return $this->table;
     }
 
-    public function getTopFive () : array {
+    public function getTopBooks () : array {
         $query = "SELECT b.id, b.title, b.imgUrl, b.price, COUNT(b.id) AS amount
             FROM books AS b
             JOIN (

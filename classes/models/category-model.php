@@ -24,10 +24,7 @@ class CategoryModel extends DB {
         $category = $stmt->fetchAll()[0];
         if($category == NULL) {
             header("HTTP/1.1 400 Bad Request");
-            echo json_encode([
-                "error" => "Categoty does not exist"
-                
-            ]);
+            http_response_code(400);
         }
         else {
             return [
@@ -45,7 +42,7 @@ class CategoryModel extends DB {
         $stmt->execute([$category->name, $category->created]);
         return $this->pdo->lastInsertId();
     }
-    public function updateCategory (Category $category, int $id): int {
+    public function updateCategory (Category $category, int $id) {
         $query = "UPDATE `categories` SET 
         `name`= ?,
         `modified`=? WHERE categories.id = ?";
@@ -57,9 +54,6 @@ class CategoryModel extends DB {
         else {
             header("HTTP/1.1 400 Bad Request");
             http_response_code(400);
-            echo json_encode([
-                'message' => "Bad request"
-            ]);
         }
     }
     public function deleteCategory (int $id) {
