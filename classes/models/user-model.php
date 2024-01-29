@@ -3,7 +3,10 @@ require_once "classes/db.php";
 class UserModel extends DB {
     protected $table = "users";
     public function getAllUsers () : array {
-        return $this->getAll($this->table);
+        $query = "SELECT  `id`, `firstName`, `lastName`, `accountLevel`, `address`, `zip`, `city`, `mobile`, `email`, `created`, `modified` FROM `users` AS u";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll();
     }
     public function getOneUser (int $id) {
         $query = "SELECT  `id`, `firstName`, `lastName`, `accountLevel`, `address`, `zip`, `city`, `mobile`, `email`, `created`, `modified` FROM `users` AS u

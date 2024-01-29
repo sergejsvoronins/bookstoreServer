@@ -39,6 +39,11 @@ class OrderModel extends DB {
         $stmt = $this->pdo->prepare($queryOrder);
         $stmt->execute([$id]);
         $order =  $stmt->fetchAll();
+        if(count($order)===0) {
+            header("HTTP/1.1 400 Bad Request");
+            http_response_code(400);
+            return;
+        }
         $queryShipment = "SELECT `firstName`, `lastName`, `address`, `zipCode`, `city`, `mobile`, `email`, `created`, `modified` FROM `shipments` AS s WHERE s.id = ?";
         $stmt = $this->pdo->prepare($queryShipment);
         $stmt->execute([$order[0]["shipmentId"]]);
