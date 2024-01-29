@@ -8,6 +8,10 @@ Manage books, authors and categories: Create, read, update, and delete items
 Process orders: Create, track, and change statuses for orders
 Handle users: Register, login, and manage users profiles and levels as administrator
 
+## Starting server
+
+First of all you need to install MAMP or XAMPP. Now you need to clone this repo into MAMP/XAMPP folder called htdocs. In phpMyAdmin page which you access by starting server, import SQL database.
+
 ## API using instructions
 
 ### Books
