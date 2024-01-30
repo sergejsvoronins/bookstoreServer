@@ -482,7 +482,7 @@ First of all you need to install MAMP or XAMPP. Now you need to clone this repo 
 ### Shipment
 
 - POST
-  - add the user (http://localhost/bookstore/shipments)
+  - add the shipment (http://localhost/bookstore/shipments)
     send an object
     ```
     {
@@ -501,6 +501,7 @@ First of all you need to install MAMP or XAMPP. Now you need to clone this repo 
       "message": "Shipment with ID = id has been updated"
     }
     ```
+  - delete shipment (http://localhost/bookstore/shipments/:id)
 
 ### User login
 

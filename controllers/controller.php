@@ -124,7 +124,7 @@ class Controller {
         if(count($errors) !== 0) {
             http_response_code(400);
             echo json_encode([
-                "errors" => $errors,
+                "error" => $errors,
             ]);
             return;
         }
@@ -243,7 +243,7 @@ class Controller {
             if(count($errors) !== 0) {
                 http_response_code(400);
                 echo json_encode([
-                    "errors" => $errors,
+                    "error" => $errors,
                 ]);
                 return;
             }

@@ -73,6 +73,7 @@ $controler->addRoute("user-orders", $userOrderModel, "addUserOrder", "POST");
 $controler->addRoute("user-orders/", $userOrderModel, "updateUserOrder", "PUT");
 $controler->addRoute("user-orders/", $userOrderModel, "deleteUserOrder", "DELETE");
 $controler->addRoute("shipments", $shipmentModel, "addShipment", "POST");
+$controler->addRoute("shipments/", $shipmentModel, "deleteShipment", "DELETE");
 $controler->addRoute("login", $loginUserModel, "loginUser", "POST");
 
 

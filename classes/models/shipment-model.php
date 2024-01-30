@@ -23,4 +23,9 @@ class ShipmentModel extends DB {
             http_response_code(400);
         }
     }
+    public function deleteShipment (int $id) : void{
+        $query = "DELETE FROM `shipments` WHERE id = ?";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute([$id]);
+    }
 }
