@@ -70,7 +70,7 @@ class UserOrderModel extends DB {
         $stmt = $this->pdo->prepare($queryOrderBooks);
         $stmt->execute([$id]);
         $books = $stmt->fetchAll();
-        $queryUser = "SELECT `firstName`, `lastName`, `accountLevel`, `address`, `zip`, `city`, `mobile`, `email` FROM `users` WHERE id = ?";
+        $queryUser = "SELECT `firstName`, `lastName`, `accountLevel`, `address`, `zipCode`, `city`, `mobile`, `email` FROM `users` WHERE id = ?";
         $stmt = $this->pdo->prepare($queryUser);
         $stmt->execute([$order[0]["userId"]]);
         $user = $stmt->fetchAll();

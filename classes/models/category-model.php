@@ -37,10 +37,23 @@ class CategoryModel extends DB {
 
     }
     public function addCategory (Category $category) : string{
-        $query = "INSERT INTO `categories`(`name`, `created`) VALUES (?,?)";
-        $stmt = $this->pdo->prepare($query);
-        $stmt->execute([$category->name, $category->created]);
-        return $this->pdo->lastInsertId();
+        $queryCheck = "SELECT * FROM `categories` AS c WHERE c.name = ?";
+        $stmt = $this->pdo->prepare($queryCheck);
+        $stmt->execute([$category->name]);
+        if($stmt->rowCount() == 0) {
+            $query = "INSERT INTO `categories`(`name`, `created`) VALUES (?,?)";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->execute([$category->name, $category->created]);
+            return $this->pdo->lastInsertId();
+        }
+        else {
+            header("HTTP/1.1 400 Bad Request");
+            http_response_code(400);
+            echo json_encode([
+                "error" => "This category is already exist"
+            ]);
+        }
+        
     }
     public function updateCategory (Category $category, int $id) {
         $query = "UPDATE `categories` SET 

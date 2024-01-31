@@ -12,13 +12,26 @@ class AuthorModel extends DB {
             $stmt->execute([$id]);
             return $stmt->fetchAll();
     }
-    public function addAuthor (Author $author) : string {
-        $query = "INSERT INTO `authors`(
-        `name`, 
-        `created`) VALUES (?,?)";
-        $stmt = $this->pdo->prepare($query);
-        $stmt->execute([$author->name, $author->created]);
-        return $this->pdo->lastInsertId();
+    public function addAuthor (Author $author) {
+        $queryCheck = "SELECT * FROM `authors` AS a WHERE a.name = ?";
+        $stmt = $this->pdo->prepare($queryCheck);
+        $stmt->execute([$author->name]);
+        if($stmt->rowCount() == 0) {
+            $query = "INSERT INTO `authors`(
+            `name`, 
+            `created`) VALUES (?,?)";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->execute([$author->name, $author->created]);
+            return $this->pdo->lastInsertId();
+
+        }
+        else {
+            header("HTTP/1.1 400 Bad Request");
+            http_response_code(400);
+            echo json_encode([
+                "error" => "This author is already exist"
+            ]);
+        }
     }
     public function updateAuthor (Author $author, int $id) {
         $query = "UPDATE `authors` SET 

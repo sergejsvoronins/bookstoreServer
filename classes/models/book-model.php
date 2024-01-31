@@ -25,21 +25,34 @@ class BookModel extends DB
     }
     public function addBook(Book $book) : string
     {
-        $query = "INSERT INTO `books`(
-            `title`, 
-            `description`, 
-            `imgUrl`,
-            `pages`, 
-            `year`, 
-            `language`, 
-            `authorId`, 
-            `categoryId`, 
-            `price`, 
-            `isbn`,
-            `created`) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
-        $stmt = $this->pdo->prepare($query);
-        $stmt->execute([$book->title, $book->description,$book->imgUrl, $book->pages, $book->year, $book->language, $book->authorId, $book->categoryId, $book->price, $book->isbn, $book->created]);
-        return $this->pdo->lastInsertId();
+        $queryCheck = "SELECT * FROM `books` AS b WHERE b.isbn = ?";
+        $stmt = $this->pdo->prepare($queryCheck);
+        $stmt->execute([$book->isbn]);
+        if($stmt->rowCount() == 0) {
+            $query = "INSERT INTO `books`(
+                `title`, 
+                `description`, 
+                `imgUrl`,
+                `pages`, 
+                `year`, 
+                `language`, 
+                `authorId`, 
+                `categoryId`, 
+                `price`, 
+                `isbn`,
+                `created`) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->execute([$book->title, $book->description,$book->imgUrl, $book->pages, $book->year, $book->language, $book->authorId, $book->categoryId, $book->price, $book->isbn, $book->created]);
+            return $this->pdo->lastInsertId();
+        }
+        else {
+            header("HTTP/1.1 400 Bad Request");
+            http_response_code(400);
+            echo json_encode([
+                "error" => "This book is already exist"
+            ]);
+        }
+
     }
 
     public function updateBook(Book $book, int $id) {

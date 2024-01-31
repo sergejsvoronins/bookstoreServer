@@ -451,7 +451,7 @@ class Controller {
                 }
             }
             if(array_key_exists("isbn", $data)) {
-                if(filter_var($data["isbn"],FILTER_VALIDATE_INT)=== false || strlen($data["isbn"]) !== 13) {
+                if(filter_var($data["isbn"],FILTER_VALIDATE_INT)=== false || !(strlen($data["isbn"]) !== 13 || strlen($data["isbn"]) !== 10)) {
                     $errors [] = "isbn is wrong format";
                 }
             }

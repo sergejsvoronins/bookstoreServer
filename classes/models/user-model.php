@@ -3,13 +3,13 @@ require_once "classes/db.php";
 class UserModel extends DB {
     protected $table = "users";
     public function getAllUsers () : array {
-        $query = "SELECT  `id`, `firstName`, `lastName`, `accountLevel`, `address`, `zip`, `city`, `mobile`, `email`, `created`, `modified` FROM `users` AS u";
+        $query = "SELECT  `id`, `firstName`, `lastName`, `accountLevel`, `address`, `zipCode`, `city`, `mobile`, `email`, `created`, `modified` FROM `users` AS u";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll();
     }
     public function getOneUser (int $id) {
-        $query = "SELECT  `id`, `firstName`, `lastName`, `accountLevel`, `address`, `zip`, `city`, `mobile`, `email`, `created`, `modified` FROM `users` AS u
+        $query = "SELECT  `id`, `firstName`, `lastName`, `accountLevel`, `address`, `zipCode`, `city`, `mobile`, `email`, `created`, `modified` FROM `users` AS u
         WHERE u.id = ?";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute([$id]);
@@ -38,7 +38,7 @@ class UserModel extends DB {
         }  
     }
     public function updateUser (User $user, int $id) {
-        $query = "UPDATE `users` AS u SET `firstName`= ?,`lastName`= ?,`address`= ?,`zip`= ?,`city`= ?,`mobile`= ?,`modified`= ? WHERE u.id = ?";
+        $query = "UPDATE `users` AS u SET `firstName`= ?,`lastName`= ?,`address`= ?,`zipCode`= ?,`city`= ?,`mobile`= ?,`modified`= ? WHERE u.id = ?";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute([$user->firstName, $user->lastName, $user->address, $user->zipCode, $user->city, $user->mobile, time(), $id]);
         return $stmt->rowCount();
