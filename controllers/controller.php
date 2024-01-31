@@ -239,17 +239,21 @@ class Controller {
         if($id) {
             $data = file_get_contents("php://input");
             $requestData = json_decode($data, true);
-            $errors = $this->getValidationErrors($requestData); 
-            if(count($errors) !== 0) {
-                http_response_code(400);
-                echo json_encode([
-                    "error" => $errors,
-                ]);
-                return;
+            $errors = [];
+            if($element != "user-level") {
+                $errors = $this->getValidationErrors($requestData); 
+                if(count($errors) !== 0) {
+                    http_response_code(400);
+                    echo json_encode([
+                        "error" => $errors,
+                    ]);
+                    return;
+                }
             }
             switch($element) {
                 case ("user-password") :
                     $item = "Password";
+
                     $requestData["password"] = filter_var($requestData["password"],FILTER_SANITIZE_SPECIAL_CHARS);
                     $requestData["oldPassword"] = filter_var($requestData["oldPassword"],FILTER_SANITIZE_SPECIAL_CHARS);
                     $user = new User ($requestData["password"]);
@@ -257,24 +261,23 @@ class Controller {
                     break;
                 case ("user-level") :
                     $item = "Account level";
-                    $requestData["firstName"] = filter_var($requestData["firstName"],FILTER_SANITIZE_SPECIAL_CHARS);
-                    $requestData["lastName"] = filter_var($requestData["lastName"],FILTER_SANITIZE_SPECIAL_CHARS);
-                    $requestData["address"] = filter_var($requestData["address"],FILTER_SANITIZE_SPECIAL_CHARS);
-                    $requestData["zipCode"] = filter_var($requestData["zipCode"],FILTER_SANITIZE_NUMBER_INT);
-                    $requestData["city"] = filter_var($requestData["city"],FILTER_SANITIZE_SPECIAL_CHARS);
-                    $requestData["mobile"] = filter_var($requestData["mobile"],FILTER_SANITIZE_NUMBER_INT);
-                    $requestData["accountLevel"] = filter_var($requestData["accountLevel"],FILTER_SANITIZE_SPECIAL_CHARS);
-                    $user = new User (
-                        $requestData['firstName'],
-                        $requestData['lastName'],
-                        $requestData['address'],
-                        $requestData['zipCode'],
-                        $requestData['city'],
-                        $requestData['mobile'],
-                        $requestData['accountLevel'],
-                    );
-                    
-                    $response = $model->$method($user, $id);
+                    if(array_key_exists("accountLevel", $requestData)) {
+                        if($requestData["accountLevel"] != "user" && $requestData["accountLevel"] != "admin") {
+                            $errors [] = "accountLevel does not match";
+                        }
+                        $requestData["accountLevel"] = filter_var($requestData["accountLevel"],FILTER_SANITIZE_SPECIAL_CHARS);
+                        $user = new User (
+                            $requestData['firstName'],
+                            $requestData['lastName'],
+                            $requestData['address'],
+                            $requestData['zipCode'],
+                            $requestData['city'],
+                            $requestData['mobile'],
+                            $requestData['accountLevel'],
+                        );
+                        
+                        $response = $model->$method($user, $id);
+                    }
                 break;
                 case ("users") :
                     $item = "User";
