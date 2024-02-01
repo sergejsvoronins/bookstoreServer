@@ -104,5 +104,13 @@ class BookModel extends DB
         $stmt->execute();
         return $stmt->fetchAll();
     }
+    public function getNewArrivals () : array {
+        $query = "SELECT b.id, b.title, b.imgUrl, b.price FROM books AS b
+            ORDER BY b.id DESC
+            LIMIT 10";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
 }
 

@@ -88,7 +88,7 @@ class Controller {
                     case "categories" : 
                         $this->view->outputJsonCollection($model->$method((int)$id));
                         break;
-                    case "userorders" : 
+                    case "user-orders" : 
                         if($method === "getAllUsersOrders") {
                             $this->view->outputJsonCollection($model->$method((int)$id));
                             return;

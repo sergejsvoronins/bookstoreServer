@@ -56,7 +56,9 @@ First of all you need to install MAMP or XAMPP. Now you need to clone this repo 
         "category": "Computers"
     }
     ```
-  - get top books (http://localhost/bookstore/top-books)
+  - get top books (10pcs) (http://localhost/bookstore/top-books)
+    Example for response: (similar as books has)
+  - get new books (10 psc) (http://localhost/bookstore/new-books)
     Example for response: (similar as books has)
 - POST
   - add new book (http://localhost/bookstore/books)
