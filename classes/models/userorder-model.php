@@ -48,7 +48,6 @@ class UserOrderModel extends DB {
             $orders[$i]["books"] = $books;
             $orders[$i]["shipmentDetails"] = $shipment;
         }
-        var_dump($orders);
         return $orders;   
     }
     public function getOneUserOrder (int $id) {
