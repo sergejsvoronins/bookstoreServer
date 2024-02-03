@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Feb 01, 2024 at 01:24 PM
+-- Generation Time: Feb 03, 2024 at 03:24 PM
 -- Server version: 5.7.24
 -- PHP Version: 8.0.1
 
@@ -112,7 +112,8 @@ INSERT INTO `books` (`id`, `title`, `description`, `imgUrl`, `pages`, `year`, `l
 (43, 'Vitklädd med ljus i hår', 'Natten till den 13 december står hon plötsligt på tröskeln - en Lucia som varken husets fru eller herre har sett förut. Yrvakna tar de emot vad hon bjuder dem från sin kaffebricka. De dricker. Hon försvinner. En okänd överbringerska av plågor och död, snart uppslukad i vimlet på de mörka storstadsgatorna ...', 'http://books.google.com/books/content?id=zYqsDwAAQBAJ&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api', 153, 2019, 'sv', 104, 17, 157, '9113104071', 1706458630, NULL),
 (44, 'Körsbär i november', 'När Christer Wijk lockas att försöka lösa mordgåtan med de förgiftade körsbären har det sånär som på några dagar gått tjugofem år sedan brottet begicks. Ett problem med detta är att Skoga har förändrats så mycket, ett annat att när tjugofem år väl har gått, kan mördaren inte längre ställas till svars. Det blir en kamp mot klockan ...', 'http://books.google.com/books/content?id=p4qsDwAAQBAJ&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api', 172, 2019, 'sv', 104, 17, 157, '9113103857', 1706458630, NULL),
 (45, 'Gullregn i oktober', 'Efter att en anonym ortsbo vunnit en miljon kronor på Lotto börjar det skvallras rejält runt om i Skoga, där det denna oktober aldrig tycks sluta regna. Så en natt hittas en man död i närheten av kyrkogården och Christer Wijk gör ett besynnerligt fynd bredvid kroppen. Och medan ryktena jagar varann genom småstaden tätnar mysteriet.', 'http://books.google.com/books/content?id=-vqpDwAAQBAJ&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api', 166, 2019, 'sv', 104, 17, 157, '9113104128', 1706458630, NULL),
-(46, 'Låt hjärtat visa vägen / En sista natt / I hetaste laget', 'Låt hjärtat visa vägen Romeo Brunetti har uppnått affärsmässiga framgångar genom att konsekvent stänga av sina känslor. Förutom den gången då han i ett ögonblick av dumdristighet förlorade sig i den vackra Maisie O’Connell. Nu har hans förflutna hunnit ikapp – och med det en fyraårig son. Romeo inser att om han någon gång ska följa sitt hjärta så är det nu! Men Maisie verkar inte lika övertygad ... En sista natt Som kronprins har Maksim fått lära sig att plikten kommer först och att kärlek bara skapar problem. Nu behöver hans kungarike en arvinge och när Maksim upptäcker att hans älskarinna inte kan få barn måste han göra slut. Men först vill han ha en sista passionerad natt i hennes varma säng ... I hetaste laget Lorelei LaBlanc försöker minnas vad som egentligen hände kvällen innan systerns bröllop. Alltför mycket champagne. En passionerad natt med Donovan St. James. Det kan inte vara sant, hon får absolut inte kopplas ihop med stans hetaste journalist! Lorelei har ju ett viktigt jobb att sköta.', 'http://books.google.com/books/content?id=dSlJEAAAQBAJ&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api', 399, 2021, 'sv', 124, 17, 79, '9150768883', 1706458631, NULL);
+(46, 'Låt hjärtat visa vägen / En sista natt / I hetaste laget', 'Låt hjärtat visa vägen Romeo Brunetti har uppnått affärsmässiga framgångar genom att konsekvent stänga av sina känslor. Förutom den gången då han i ett ögonblick av dumdristighet förlorade sig i den vackra Maisie O’Connell. Nu har hans förflutna hunnit ikapp – och med det en fyraårig son. Romeo inser att om han någon gång ska följa sitt hjärta så är det nu! Men Maisie verkar inte lika övertygad ... En sista natt Som kronprins har Maksim fått lära sig att plikten kommer först och att kärlek bara skapar problem. Nu behöver hans kungarike en arvinge och när Maksim upptäcker att hans älskarinna inte kan få barn måste han göra slut. Men först vill han ha en sista passionerad natt i hennes varma säng ... I hetaste laget Lorelei LaBlanc försöker minnas vad som egentligen hände kvällen innan systerns bröllop. Alltför mycket champagne. En passionerad natt med Donovan St. James. Det kan inte vara sant, hon får absolut inte kopplas ihop med stans hetaste journalist! Lorelei har ju ett viktigt jobb att sköta.', 'http://books.google.com/books/content?id=dSlJEAAAQBAJ&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api', 399, 2021, 'sv', 124, 17, 79, '9150768883', 1706458631, NULL),
+(47, 'test book', NULL, NULL, 200, 2018, 'en', 120, 13, 489, '1254789660', 1706966700, 1706966713);
 
 -- --------------------------------------------------------
 
@@ -161,41 +162,19 @@ CREATE TABLE `orderitems` (
 --
 
 INSERT INTO `orderitems` (`id`, `orderId`, `bookId`, `amount`) VALUES
-(15, 24, 42, 1),
-(16, 24, 41, 1),
-(17, 24, 40, 1),
-(18, 24, 39, 1),
-(19, 25, 43, 1),
-(20, 25, 45, 1),
-(21, 25, 39, 1),
-(22, 25, 35, 1),
-(23, 25, 34, 1),
-(24, 26, 22, 1),
-(25, 26, 21, 1),
-(26, 27, 24, 1),
-(27, 27, 16, 1),
-(28, 27, 15, 1),
-(29, 27, 26, 1),
-(30, 28, 19, 1),
-(31, 28, 20, 1),
-(32, 28, 15, 1),
-(33, 29, 23, 1),
-(34, 29, 22, 1),
-(35, 29, 24, 1),
-(36, 29, 27, 1),
-(37, 30, 26, 1),
-(38, 30, 25, 1),
-(39, 30, 28, 1),
-(40, 30, 33, 1),
-(41, 30, 31, 1),
-(42, 30, 29, 1),
-(43, 31, 15, 1),
-(44, 31, 22, 1),
-(45, 31, 21, 1),
-(46, 31, 24, 1),
-(47, 32, 27, 4),
-(48, 32, 26, 6),
-(49, 32, 25, 4);
+(52, 34, 46, 3),
+(53, 34, 33, 1),
+(54, 34, 31, 1),
+(55, 34, 27, 1),
+(56, 34, 20, 1),
+(57, 34, 19, 1),
+(58, 35, 20, 1),
+(59, 35, 16, 1),
+(60, 35, 22, 1),
+(61, 35, 44, 6),
+(62, 36, 25, 1),
+(63, 36, 23, 2),
+(64, 36, 27, 1);
 
 -- --------------------------------------------------------
 
@@ -217,31 +196,9 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`id`, `orderDate`, `totalPrice`, `shipmentId`, `orderStatus`, `Modified`) VALUES
-(24, 1706462443, 914, 32, 'processing', 1706563602),
-(25, 1706463825, 2141, 35, 'new', NULL),
-(26, 1706781139, 2676, 46, 'new', NULL),
-(27, 1706781770, 1337, 47, 'new', NULL),
-(28, 1706782307, 1655, 48, 'new', NULL),
-(29, 1706782530, 4019, 49, 'new', NULL),
-(30, 1706782705, 1509, 50, 'new', NULL),
-(31, 1706783026, 3224, 51, 'new', NULL),
-(32, 1706785541, 6389, 52, 'new', NULL);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `payments`
---
-
-CREATE TABLE `payments` (
-  `id` int(11) NOT NULL,
-  `orderId` int(11) NOT NULL,
-  `paymentdate` int(11) NOT NULL,
-  `totalPrice` int(11) NOT NULL,
-  `transactionId` int(11) NOT NULL,
-  `paymentMethod` varchar(50) NOT NULL,
-  `modified` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+(34, 1706965808, 1826, 55, 'new', NULL),
+(35, 1706966226, 4686, 56, 'processing', 1706967213),
+(36, 1706966320, 3109, 57, 'new', NULL);
 
 -- --------------------------------------------------------
 
@@ -267,28 +224,15 @@ CREATE TABLE `shipments` (
 --
 
 INSERT INTO `shipments` (`id`, `firstName`, `lastName`, `address`, `zipCode`, `city`, `mobile`, `email`, `created`, `modified`) VALUES
-(30, 'Anstasia', 'Khitsjo', 'Vilkengata 1', '14250', 'Skogås', '54979794', 'a@test.se', 1706460992, NULL),
-(31, 'Anstasia', 'Khitsjo', 'Vilkengata 1', '14250', 'Skogås', '54979794', 'a@test.se', 1706461083, NULL),
-(32, 'Anstasia', 'Khitsjo', 'Vilkengata 1', '14250', 'Skogås', '54979794', 'a@test.se', 1706462443, NULL),
-(33, 'Anstasia', 'Voronins', 'Russinvägen 1', '12359', 'Farsta', '726564865', 'test@test.se', 1706463521, NULL),
-(34, 'Anstasia', 'Voronins', 'Russinvägen 1', '12359', 'Farsta', '726564865', 'test@test.se', 1706463638, NULL),
-(35, 'Anstasia', 'Voronins', 'Russinvägen 1', '12359', 'Farsta', '726564865', 'test@test.se', 1706463825, NULL),
-(36, 'Anstasia', 'Voronins', 'Russinvägen 1', '12359', 'Farsta', '726564865', 'test@test.se', 1706463933, NULL),
-(38, 'testname', 'testname', 'testgata', '12359', 'Farsta', '0720805487', 'test@test.se', 1706621066, NULL),
-(39, 'testname', 'testname', 'testgata', '12359', 'Farsta', '0720805487', 'test@test.se', 1706621207, NULL),
-(40, 'testname', 'testname', 'testgata', '12359', 'Farsta', '0700806594', 'test@test.se', 1706621270, NULL),
-(41, 'testname', 'testname', 'testgata', '12359', 'Farsta', '0700806594', 'test@test.se', 1706621392, NULL),
-(42, 'testname', 'testname', 'testgata', '12359', 'Farsta', '0700806594', 'test@test.se', 1706621444, NULL),
-(43, 'testname', 'testname', 'testgata', '12359', 'Farsta', '0700806594', 'test@test.se', 1706621775, NULL),
-(44, 'testname', 'testname', 'testgata', '12359', 'Farsta', '0700806594', 'test@test.se', 1706623030, NULL),
-(45, 'testname', 'testname', 'testgata', '12359', 'Farsta', '0700806594', 'test@test.se', 1706624254, NULL),
-(46, 'Frej', 'Voronins', 'Russingatan 1', '12359', 'Farsta', '0725806589', 'f@v.se', 1706781136, NULL),
-(47, 'Eliah', 'Voronins', 'Russinvägen 1', '12359', 'Farsta', '0725098747', 'e@v.se', 1706781768, NULL),
-(48, 'Eliah', 'Voronins', 'Russinvägen 1', '12359', 'Farsta', '0725098747', 'e@v.se', 1706782305, NULL),
-(49, 'Eliah', 'Voronins', 'Russinvägen 1', '12359', 'Farsta', '0725098747', 'e@v.se', 1706782528, NULL),
-(50, 'Eliah', 'Voronins', 'Russinvägen 1', '12359', 'Farsta', '0725098747', 'e@v.se', 1706782703, NULL),
-(51, 'Eliah', 'Voronins', 'Russinvägen 1', '12359', 'Farsta', '0725098747', 'e@v.se', 1706783024, NULL),
-(52, 'Eliah', 'Voronins', 'Russinvägen 1', '12359', 'Farsta', '0725098747', 'e@v.se', 1706785539, NULL);
+(55, 'Alex', 'Olsson', 'Någongata 1', '12359', 'Farsta', '0720234678', 'test@test.se', 1706965806, NULL),
+(56, 'Qventin', 'Tarantino', 'Storgatan 1', '12470', 'Bandhagen', '0725080796', 'q@w.se', 1706966224, NULL),
+(57, 'Qventin', 'Tarantino', 'Storgatan 1', '12470', 'Bandhagen', '0725080796', 'q@w.se', 1706966318, NULL),
+(58, 'Anders', 'Andersson', 'Hemliggata 3', '12359', 'Farsta', '0720901057', 'admin@admin.com', 1706972693, NULL),
+(59, 'Anders', 'Andersson', 'Hemliggata 3', '12359', 'Farsta', '0720901057', 'admin@admin.com', 1706972736, NULL),
+(60, 'Anders', 'Andersson', 'Hemliggata 3', '12359', 'Farsta', '0720901057', 'admin@admin.com', 1706972939, NULL),
+(61, 'Anders', 'Andersson', 'Hemliggata 3', '12359', 'Farsta', '0720901057', 'admin@admin.com', 1706973114, NULL),
+(62, 'Anders', 'Andersson', 'Hemliggata 3', '12359', 'Farsta', '0720901057', 'admin@admin.com', 1706973158, NULL),
+(63, 'Anders', 'Andersson', 'Hemliggata 3', '12359', 'Farsta', '0720901057', 'admin@admin.com', 1706973782, NULL);
 
 -- --------------------------------------------------------
 
@@ -308,16 +252,17 @@ CREATE TABLE `userorderitems` (
 --
 
 INSERT INTO `userorderitems` (`id`, `userOrderId`, `bookId`, `amount`) VALUES
-(14, 9, 18, 1),
-(15, 9, 37, 1),
-(16, 9, 35, 1),
-(17, 9, 33, 1),
-(18, 9, 29, 1),
-(19, 9, 43, 1),
-(20, 10, 16, 2),
-(21, 10, 43, 15),
-(22, 10, 41, 2),
-(24, 12, 18, 2);
+(27, 17, 38, 7),
+(28, 17, 22, 1),
+(29, 17, 24, 1),
+(30, 17, 27, 1),
+(31, 17, 26, 1),
+(32, 18, 20, 3),
+(33, 18, 21, 1),
+(34, 18, 24, 1),
+(35, 18, 19, 1),
+(36, 18, 16, 1),
+(37, 19, 20, 4);
 
 -- --------------------------------------------------------
 
@@ -340,9 +285,9 @@ CREATE TABLE `userorders` (
 --
 
 INSERT INTO `userorders` (`id`, `orderDate`, `totalPrice`, `userId`, `shipmentId`, `orderStatus`, `Modified`) VALUES
-(9, 1706463933, 741, 3, 36, 'new', NULL),
-(10, 1706621777, 3022, 3, 43, 'completed', 1706706863),
-(12, 1706624255, 353, 3, 45, 'new', NULL);
+(17, 1706973116, 4525, 4, 61, 'shipped', 1706973816),
+(18, 1706973160, 3871, 4, 62, 'new', NULL),
+(19, 1706973783, 4311, 4, 63, 'new', NULL);
 
 -- --------------------------------------------------------
 
@@ -371,7 +316,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `firstName`, `lastName`, `accountLevel`, `password`, `address`, `zipCode`, `city`, `mobile`, `email`, `created`, `modified`) VALUES
 (1, 'Sergejs', 'Voronins', 'admin', '$2y$10$1QH0fL.4ASJtYJS29NHfk.7WTY3yVmn7NAYCvaF.BtZDITgUF5a5m', 'Russinvägen 1', '12359', 'Farsta', '0720801071', 'sergejs.voronins@medieinstitutet.se', 1703588794, NULL),
-(3, 'Anders', 'Andersson', 'user', '$2y$10$CgfBcgUsHfEWXIFd5Tvea.FyGJVntnG1W8UO0JO3q8yQaTv0ZuNu2', 'Andersgatan 1', '14250', 'Skogås', '0720205497', 'test@test.se', 1705588715, 1706721200);
+(4, 'Anders', 'Andersson', 'admin', '$2y$10$C9vlYGzqNNhVKI5T4N53NeQvwYDPhP9YBmMuGotwHlghctXiL.zhe', 'Hemliggata 3', '12359', 'Farsta', '0720901057', 'admin@admin.com', 1706967256, 1706972640);
 
 --
 -- Indexes for dumped tables
@@ -413,13 +358,6 @@ ALTER TABLE `orders`
   ADD KEY `shipment` (`shipmentId`);
 
 --
--- Indexes for table `payments`
---
-ALTER TABLE `payments`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `paymentsOrders` (`orderId`);
-
---
 -- Indexes for table `shipments`
 --
 ALTER TABLE `shipments`
@@ -454,61 +392,55 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `authors`
 --
 ALTER TABLE `authors`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=192;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=193;
 
 --
 -- AUTO_INCREMENT for table `books`
 --
 ALTER TABLE `books`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT for table `orderitems`
 --
 ALTER TABLE `orderitems`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
-
---
--- AUTO_INCREMENT for table `payments`
---
-ALTER TABLE `payments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT for table `shipments`
 --
 ALTER TABLE `shipments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 
 --
 -- AUTO_INCREMENT for table `userorderitems`
 --
 ALTER TABLE `userorderitems`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT for table `userorders`
 --
 ALTER TABLE `userorders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Constraints for dumped tables
@@ -533,12 +465,6 @@ ALTER TABLE `orderitems`
 --
 ALTER TABLE `orders`
   ADD CONSTRAINT `shipment` FOREIGN KEY (`shipmentId`) REFERENCES `shipments` (`id`);
-
---
--- Constraints for table `payments`
---
-ALTER TABLE `payments`
-  ADD CONSTRAINT `paymentsOrders` FOREIGN KEY (`orderId`) REFERENCES `orders` (`id`);
 
 --
 -- Constraints for table `userorderitems`

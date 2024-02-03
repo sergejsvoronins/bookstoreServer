@@ -17,7 +17,7 @@ class LoginUserModel extends DB {
             header("HTTP/1.1 400 Bad Request");
             http_response_code(400);
             echo json_encode([
-                'message' => "Invalid email or password"
+                'error' => "Invalid email or password"
             ]);
         }
 

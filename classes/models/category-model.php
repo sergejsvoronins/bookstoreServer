@@ -11,7 +11,7 @@ class CategoryModel extends DB {
         return $stmt->fetchAll(); 
     }
     public function getCategoryBooks (int $id) {
-        $queryCategoryBooks = "SELECT b.id AS bookId, b.title, b.imgUrl, b.price, c.name AS category FROM `categories` AS c
+        $queryCategoryBooks = "SELECT b.id, b.title, b.imgUrl, b.price, c.name AS category FROM `categories` AS c
         JOIN books AS b ON c.id = b.categoryId
         WHERE c.id = ?";
         $stmt = $this->pdo->prepare($queryCategoryBooks);
@@ -36,7 +36,7 @@ class CategoryModel extends DB {
         }
 
     }
-    public function addCategory (Category $category) : string{
+    public function addCategory (Category $category) {
         $queryCheck = "SELECT * FROM `categories` AS c WHERE c.name = ?";
         $stmt = $this->pdo->prepare($queryCheck);
         $stmt->execute([$category->name]);
