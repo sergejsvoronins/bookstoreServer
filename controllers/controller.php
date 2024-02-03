@@ -367,7 +367,7 @@ class Controller {
         }
     }
 
-    //function that validates possible errors
+    //function that validate possible errors
     private function getValidationErrors($data) : array {
         $errors = [];
         if(is_array($data) && ! empty($data)){
